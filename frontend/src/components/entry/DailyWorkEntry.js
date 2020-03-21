@@ -4,7 +4,7 @@ import '../../homePage.css';
 import './entry.css';
 import InputPartyNameField from "../modular/InputPartyNameField";
 import InputDateField from "../modular/InputDateField";
-import Autocomplete from "./AutoComplete";
+//import Autocomplete from "./AutoComplete";
 import InputPartyVillageField from "../modular/InputPartyVillageField";
 import InputRateField from "../modular/InputRateField";
 import InputRemarkField from "../modular/InputRemarkField";
@@ -141,7 +141,7 @@ export default class DailyWorkEntry extends React.Component {
 
               <select onChange={e => this.state.selectedVehicle=e.target.value}>
                 {this.state.vehicleNamesFromApi.map((item) => (
-                    <option value={item}>{item}</option>
+                    <option value={item} key={item}>{item}</option>
                 ))}
               </select> 
 
