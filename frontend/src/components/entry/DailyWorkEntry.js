@@ -48,7 +48,8 @@ export default class DailyWorkEntry extends React.Component {
       .then(res => {
         this.fetchProduct();
         this.setState({
-          responseMessage: res.data
+          responseMessage: res.data,
+          totalAmount: "Net Amount "+(((this.state.fiveFeet)*(this.state.fiveFeetRate)) + ((this.state.twoHalfFeet)*(this.state.twoHalfFeetRate)))
         });
       })
       .catch(error => {
@@ -99,6 +100,7 @@ export default class DailyWorkEntry extends React.Component {
       receivedAmount: 0,
       remark: "",
       responseMessage: "",
+      totalAmount: "",
       buttonStatus: {
         visibility: "visible"
       },
@@ -205,7 +207,7 @@ export default class DailyWorkEntry extends React.Component {
               <br />
 
               <InputRateField
-                placeholderParent="Diesel Spend"
+                placeholderParent="Diesel in Money"
                 callbackFromParent={dataFromChild => {
                   this.state.dieselSpend = dataFromChild;
                 }}
@@ -231,6 +233,7 @@ export default class DailyWorkEntry extends React.Component {
               />
             </div>
             <p>{this.state.responseMessage}</p>
+            <p>{this.state.totalAmount}</p>
             <button
               type="submit"
               className="btn btn-outline-dark"
