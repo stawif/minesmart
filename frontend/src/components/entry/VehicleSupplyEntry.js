@@ -13,16 +13,18 @@ export default class VehicleSupplyEntry extends React.Component {
         "http://127.0.0.1:8000/list-of-material/"
       );
       const jsonItemList = await responseItemList.json();
-
-      jsonItemList.map(item => 
-        this.setState({ 
-          materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
-        })
-      );
-    } catch {
-      this.toggleLoadStatus();
-    }
-    
+      if(jsonItemList.length > 0){
+        jsonItemList.map(item => 
+          this.setState({ 
+            materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
+          })
+        );
+      }
+      else{
+        this.toggleLoadStatus();
+      }
+    } 
+    catch {}    
   };
 
 
@@ -132,41 +134,44 @@ export default class VehicleSupplyEntry extends React.Component {
         className="form-container form-group"
         onSubmit={e => this.onSubmit(e)}
       >
-        <p className="headingViewPart">Vehicle Supply Entry</p>
-        <div className="pt-5">
-         <select onChange={e => this.state.selectedMaterial=e.target.value}>
-                {this.state.materialNamesFromApi.map((item) => (
-                    <option value={item}>{item}</option>
-                ))}
-          </select> 
+        <h3 style={this.state.loadingStatus}>There is no material registered</h3>
+        <div style={this.state.loadedStatus}>
+          <p className="headingViewPart">Vehicle Supply Entry</p>
+          <div className="pt-5">
+          <select onChange={e => this.state.selectedMaterial=e.target.value}>
+                  {this.state.materialNamesFromApi.map((item) => (
+                      <option value={item}>{item}</option>
+                  ))}
+            </select> 
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <InputDateField
-            callbackFromParent={dataFromChild => {
-              this.state.date = dataFromChild;
-            }}
-          />
+            <InputDateField
+              callbackFromParent={dataFromChild => {
+                this.state.date = dataFromChild;
+              }}
+            />
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <InputQuantityField
-            placeholder={"Quantity"}
-            callbackFromParent={dataFromChild => {
-              this.state.quantity = dataFromChild;
-            }}
-          />
-        </div>
-        <p>{this.state.responseMessage}</p>
-        <button
-          type="submit"
-          className="btn btn-outline-dark"
-          style={this.state.buttonStatus}
-        >
-          Save
-        </button>
+            <InputQuantityField
+              placeholder={"Quantity"}
+              callbackFromParent={dataFromChild => {
+                this.state.quantity = dataFromChild;
+              }}
+            />
+          </div>
+          <p>{this.state.responseMessage}</p>
+          <button
+            type="submit"
+            className="btn btn-outline-dark"
+            style={this.state.buttonStatus}
+          >
+            Save
+          </button>
+        </div>    
       </form>
     );
   }
