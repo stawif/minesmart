@@ -207,7 +207,7 @@ export default class MachineWorkEntry extends React.Component {
               <br />
               <br />
               <InputRateField
-                placeholderParent={"Diesel Amount"}
+                placeholderParent={"Diesel in liter"}
                 callbackFromParent={dataFromChild => {
                   this.state.dieselAmount = parseInt(dataFromChild);
                 }}
