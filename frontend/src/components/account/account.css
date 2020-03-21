@@ -1,0 +1,96 @@
+#mainDiv{
+    height: 100%;
+    width: 100%;
+}
+
+.tableShow{
+    height: 100%;
+    width: 100%;
+}
+
+.upperHeader{
+    height: 10%;
+}
+.lowerHeader{
+	height: 80%;
+}
+.dateFilter{
+	height: 10%;
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+}
+.fromDate{
+	height: 100%;
+	width:50%;
+}
+.fromDate input{
+	width: 80%;
+	margin-left: 5%;
+}
+.toDate{
+	height: 100%;
+	width: 50%;
+}
+.toDate input{
+	width: 80%;
+	margin-left: 5%;
+}
+table{
+	position: relative;
+}
+
+thead {
+	position: -webkit-sticky; /* Safari */
+	position: sticky;																																								
+	top: 0;
+}
+.commonFont{
+    font-size: 1.4vw;
+}
+@media only screen and (min-width: 1000px){
+	.highTable{
+		display: none;
+	}
+	.upperHeader{
+		margin: auto;
+	}
+}
+
+@media only screen and (min-width: 500px) and (max-width: 1000px){
+	.highTable{
+		display:none;
+	}
+	.upperHeader{
+		margin: auto;
+	}
+}
+@media only screen and (max-width: 500px){
+	.upperHeader{
+		display:none;
+	}
+	.highTable{
+		width: 100%;
+		margin: auto;
+	}
+	.highTable div{
+		padding: 0px;
+	}
+	.highTable button{
+		position: static;
+		height: 100%;
+		width: 100%;
+	}
+	.lowerHeader{
+		display: block;
+		margin-top: 0;
+		height:80%;
+		width:100%;
+	}
+	table{
+		position: static;
+	}
+	thead{
+		position: static;
+	}
+}

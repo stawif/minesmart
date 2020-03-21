@@ -1,0 +1,114 @@
+/*Physical section*/
+#tableComponent{
+	height:100%;
+	width: 100%;
+}
+.upperTable{
+	height: 10%;
+	width: 100%;
+}
+.midTable{
+	height: 80%;
+	width: 100%;
+}
+.lowerTable{
+	height: 10%;
+	width: 100%;
+}
+/*Background section*/
+.lightGray{
+    background-color: rgb(211,211,211);
+}
+/*Font section*/
+.commonFont{
+    font-size: 1.4vw;
+}
+/*Position controll*/
+table{
+	position: relative;
+}
+.scroll-class{
+	height: 100%;
+	width: 100%;
+	overflow-y: scroll;
+}
+
+thead {
+	position: -webkit-sticky; /* Safari */
+	position: sticky;																																								
+	top: 0;
+}
+
+
+@media only screen and (min-width: 1000px){
+	.topTable{
+		display: none;
+	}
+	.upperTable{
+		margin: auto;
+	}
+	.lowerTable{
+		margin: auto;
+	}
+	/*Input controll*/
+	input[type="radio"]{
+		width: 40%;
+	}
+}
+
+@media only screen and (min-width: 500px) and (max-width: 1000px){
+	.topTable{
+		display: none;
+	}
+	.upperTable{
+		margin: auto;
+	}
+	.lowerTable{
+		margin: auto;
+	}
+	/*Input controll*/
+	input[type="radio"]{
+		width: 40%;
+	}
+}
+
+@media only screen and (max-width: 500px){
+	.upperTable{
+		display: none;
+	}
+	.lowerTable{
+		display: none;
+	}
+	.topTable{
+		height: 10%;
+		width: 100%;
+		margin:auto;
+	}
+	.topTable div{
+		padding: 0px;
+	}
+	.topTable button{
+		position: static;
+		height: 100%;
+		width: 100%;
+	}
+	.midTable{
+		display: block;
+		margin-top: 0;
+		height:80%;
+		width:100%;
+	}
+	input[type="radio"]{
+		width: 20%;
+	}
+	table{
+		position: static;
+	}
+	thead{
+		position: static;
+	}
+	.commonFont{
+		font-size: 3vw;
+	}
+	
+}
