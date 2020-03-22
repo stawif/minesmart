@@ -10,7 +10,8 @@ export default class VehicleRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-vehicles/"
       );
       const jsonVehicleList = await responseVehicleList.json();
-      this.state.vehicleList = jsonVehicleList;
+      this.setState({ vehicleList: jsonVehicleList });
+      //this.state.vehicleList = jsonVehicleList;
     } catch {
       this.toggleLoadStatus();
     }
@@ -103,6 +104,8 @@ export default class VehicleRegistration extends React.Component {
     this.checkVehicle = this.checkVehicle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.toggleLoadStatus = this.toggleLoadStatus.bind(this);
+
+    //Fetch data from server
     this.fetchProduct();
   }
 

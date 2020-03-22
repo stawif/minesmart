@@ -13,7 +13,8 @@ export default class WorkerRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-worker/"
       );
       const jsonWorkerList = await responseWorkerList.json();
-      this.state.workerList = jsonWorkerList;
+      this.setState({ workerList: jsonWorkerList });
+      //this.state.workerList = jsonWorkerList;
     } catch {
       this.toggleLoadStatus();
     }

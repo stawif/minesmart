@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import InputQuantityField from "../modular/InputQuantityField";
 import InputCommonName from "../modular/InputCommonName";
-import InputRateField from "../modular/InputRateField";
+//import InputRateField from "../modular/InputRateField";
 
 export default class MaterialRegistration extends React.Component {
   // Fetch material list from server
@@ -12,7 +12,8 @@ export default class MaterialRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-material/"
       );
       const jsonItemList = await responseItemList.json();
-      this.state.materialList = jsonItemList;
+      this.setState({ materialList: jsonItemList });
+      //this.state.materialList = jsonItemList;
     } catch {
       this.toggleLoadStatus();
     }
@@ -120,51 +121,50 @@ export default class MaterialRegistration extends React.Component {
   }
   render() {
     return (
-        <form
-          className="form-container form-group"
-          onSubmit={e => this.onSubmit(e)}
+      <form
+        className="form-container form-group"
+        onSubmit={e => this.onSubmit(e)}
+      >
+        <p className="headingViewPart">Material Registration</p>
+        <div className="pt-5">
+          <InputCommonName
+            minLengthh={"2"}
+            placeholderParent={"Material Name"}
+            callbackFromParent={dataFromChild => {
+              this.state.materialName = dataFromChild;
+              this.checkMaterial();
+            }}
+          />
+
+          <p>{this.state.materialExistMessage}</p>
+          <br />
+          <InputCommonName
+            minLengthh={"2"}
+            callbackFromParent={dataFromChild => {
+              this.state.materialMeasurement = dataFromChild;
+            }}
+            placeholderParent={"Measurement"}
+          />
+
+          <br />
+          <br />
+
+          <InputQuantityField
+            placeholder={"Quantity"}
+            callbackFromParent={dataFromChild => {
+              this.state.materialQuantity = dataFromChild;
+            }}
+          />
+        </div>
+        <p>{this.state.responseMessage}</p>
+        <button
+          type="submit"
+          className="btn btn-outline-dark"
+          style={this.state.buttonStatus}
         >
-          <p className="headingViewPart">Material Registration</p>
-          <div className="pt-5">
-            <InputCommonName
-              minLengthh={"2"}
-              placeholderParent={"Material Name"}
-              callbackFromParent={dataFromChild => {
-                this.state.materialName = dataFromChild;
-                this.checkMaterial();
-              }}
-            />
-
-            <p>{this.state.materialExistMessage}</p>
-            <br />
-            <InputCommonName
-              minLengthh={"2"}
-              callbackFromParent={dataFromChild => {
-                this.state.materialMeasurement = dataFromChild;
-              }}
-              placeholderParent={"Measurement"}
-            />
-
-            <br />
-            <br />
-
-            <InputQuantityField
-              placeholder={"Quantity"}
-              callbackFromParent={dataFromChild => {
-                this.state.materialQuantity = dataFromChild;
-              }}
-            />
-
-          </div>
-          <p>{this.state.responseMessage}</p>
-          <button
-            type="submit"
-            className="btn btn-outline-dark"
-            style={this.state.buttonStatus}
-          >
-            Save
-          </button>
-        </form>
+          Save
+        </button>
+      </form>
     );
   }
 }

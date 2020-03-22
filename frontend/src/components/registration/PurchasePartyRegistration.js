@@ -13,7 +13,8 @@ export default class PurchasePartyRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-purchaseparty/"
       );
       const jsonPartyList = await responsePartyList.json();
-      this.state.partyList = jsonPartyList;
+      this.setState({ partyList: jsonPartyList });
+      //this.state.partyList = jsonPartyList;
     } catch {
       this.toggleLoadStatus();
     }

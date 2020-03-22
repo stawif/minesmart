@@ -11,7 +11,7 @@ export default class MachineRegistration extends React.Component {
       );
       const jsonMachineList = await responseMachineList.json();
       this.setState({machineList: jsonMachineList})
-      // this.state.machineList = jsonMachineList;
+      
     } catch {
       this.toggleLoadStatus();
     }
@@ -104,6 +104,8 @@ export default class MachineRegistration extends React.Component {
     this.checkMachine = this.checkMachine.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.toggleLoadStatus = this.toggleLoadStatus.bind(this);
+
+    // Fetch information from server
     this.fetchProduct();
   }
 
@@ -117,32 +119,26 @@ export default class MachineRegistration extends React.Component {
         className="form-container form-group"
         onSubmit={e => this.onSubmit(e)}
       >
-        <h3 style={this.state.loadingStatus}>Loading...</h3>
-        <div style={this.state.loadedStatus}>
-          <p className="headingViewPart">Machine Registration</p>
-          <div className="pt-5">
-            <InputCommonName
-              minLengthh={"5"}
-              placeholderParent={"Machine Name"}
-              callbackFromParent={dataFromChild => {
-
-                //this.setState({machineName: dataFromChild})
-
-                 this.state.machineName = dataFromChild;
-                this.checkMachine();
-              }}
-            />
-          </div>
-          <p>{this.state.machineExistStatus}</p>
-          <p>{this.state.responseMessage}</p>
-          <button
-            type="submit"
-            className="btn btn-outline-dark"
-            style={this.state.buttonStatus}
-          >
-            Save
-          </button>
+        <p className="headingViewPart">Machine Registration</p>
+        <div className="pt-5">
+          <InputCommonName
+            minLengthh={"5"}
+            placeholderParent={"Machine Name"}
+            callbackFromParent={dataFromChild => {
+              this.state.machineName = dataFromChild;
+              this.checkMachine();
+            }}
+          />
         </div>
+        <p>{this.state.machineExistStatus}</p>
+        <p>{this.state.responseMessage}</p>
+        <button
+          type="submit"
+          className="btn btn-outline-dark"
+          style={this.state.buttonStatus}
+        >
+          Save
+        </button>
       </form>
     );
   }

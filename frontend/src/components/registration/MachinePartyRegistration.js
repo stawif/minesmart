@@ -12,7 +12,8 @@ export default class MachinePartyRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-machineparty/"
       );
       const jsonMachineList = await responseMachineList.json();
-      this.state.partyList = jsonMachineList;
+      this.setState({partyList: jsonMachineList})
+      //this.state.partyList = jsonMachineList;
     } catch {
       this.toggleLoadStatus();
     }

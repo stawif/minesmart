@@ -12,21 +12,35 @@ export default class MachineSupplyEntry extends React.Component {
         "http://127.0.0.1:8000/list-of-machineparty/"
       );
       const jsonMachineList = await responseMachineList.json();
-      jsonMachineList.map(item => this.state.partyNamesFromApi.push(item.name));
 
       const responseMaterialList = await fetch(
         "http://127.0.0.1:8000/list-of-material/"
       );
-
       const jsonMaterialList = await responseMaterialList.json();
-      jsonMaterialList.map(item =>
-        this.setState({ 
-          materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
-        })
-      );
-    } catch {
-      this.toggleLoadStatus();
-    }
+      
+      if(jsonMachineList.length > 0 && jsonMaterialList.length > 0){
+        jsonMachineList.map(item =>
+          this.setState({
+            partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
+          }) 
+        );
+        
+        this.state.materialNamesFromApi= [];
+        jsonMaterialList.map(item =>
+          this.setState({ 
+            materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
+          })
+        );
+
+        this.setState({
+          selectedMaterial: this.state.materialNamesFromApi[0]
+        });
+      }
+      else{
+        this.toggleLoadStatus();
+      }
+    } 
+    catch {}
   };
 
   // Check existence of party name
@@ -100,22 +114,22 @@ export default class MachineSupplyEntry extends React.Component {
 
   // toggle load status
   toggleLoadStatus = async () => {
-    if (this.state.loadingStatus.visibility === "visible") {
+    if (this.state.loadingStatus.display === "block") {
       await this.setState({
         loadingStatus: {
-          visibility: "hidden"
+          display: "none"
         },
         loadedStatus: {
-          visibility: "visible"
+          display: "block"
         }
       });
     } else {
       await this.setState({
         loadingStatus: {
-          visibility: "visible"
+          display: "block"
         },
         loadedStatus: {
-          visibility: "hidden"
+          display: "none"
         }
       });
     }
@@ -137,10 +151,10 @@ export default class MachineSupplyEntry extends React.Component {
         visibility: "visible"
       },
       loadingStatus: {
-        visibility: "visible"
+        display: "block"
       },
       loadedStatus: {
-        visibility: "hidden"
+        display: "none"
       }
     };
 
@@ -162,60 +176,63 @@ export default class MachineSupplyEntry extends React.Component {
         className="form-container form-group"
         onSubmit={e => this.onSubmit(e)}
       >
-        <p className="headingViewPart">Machine Supply Entry</p>
-        <div className="pt-5">
-          <Autocomplete
-            suggestions={this.state.partyNamesFromApi}
-            callbackFromParent={dataFromChild => {
-              this.state.selectedParty = dataFromChild;
-            }}
-            checkFromParent={this.checkParty}
-            placeholderfrom={"Party name"}
-          />
+        <h3 style={this.state.loadingStatus}>There is no machine party or material</h3>
+        <div style={this.state.loadedStatus}>
+          <p className="headingViewPart">Machine Supply Entry</p>
+          <div className="pt-5">
+            <Autocomplete
+              suggestions={this.state.partyNamesFromApi}
+              callbackFromParent={dataFromChild => {
+                this.state.selectedParty = dataFromChild;
+              }}
+              checkFromParent={this.checkParty}
+              placeholderfrom={"Party name"}
+            />
 
-          <p>{this.state.partyExistMessage}</p>
-          <br />
+            <p>{this.state.partyExistMessage}</p>
+            <br />
 
-          <select onChange={e => this.state.selectedMaterial=e.target.value}>
-                {this.state.materialNamesFromApi.map((item) => (
-                    <option value={item}>{item}</option>
-                ))}
-          </select> 
+            <select onChange={e => this.state.selectedMaterial=e.target.value}>
+                  {this.state.materialNamesFromApi.map((item) => (
+                      <option value={item}>{item}</option>
+                  ))}
+            </select> 
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <InputDateField
-            callbackFromParent={dataFromChild => {
-              this.state.date = dataFromChild;
-            }}
-          />
-          <br />
-          <br />
+            <InputDateField
+              callbackFromParent={dataFromChild => {
+                this.state.date = dataFromChild;
+              }}
+            />
+            <br />
+            <br />
 
-          <InputQuantityField
-            placeholder="Drilling Feet"
-            callbackFromParent={dataFromChild => {
-              this.state.drillingfeet = dataFromChild;
-            }}
-          />
-          <br />
-          <br />
-          <InputQuantityField
-            placeholder={"Quantity"}
-            callbackFromParent={dataFromChild => {
-              this.state.quantity = dataFromChild;
-            }}
-          />
-        </div>
-        <p>{this.state.responseMessage}</p>
-        <button
-          type="submit"
-          className="btn btn-outline-dark"
-          style={this.state.buttonStatus}
-        >
-          Save
-        </button>
+            <InputQuantityField
+              placeholder="Drilling Feet"
+              callbackFromParent={dataFromChild => {
+                this.state.drillingfeet = dataFromChild;
+              }}
+            />
+            <br />
+            <br />
+            <InputQuantityField
+              placeholder={"Quantity"}
+              callbackFromParent={dataFromChild => {
+                this.state.quantity = dataFromChild;
+              }}
+            />
+          </div>
+          <p>{this.state.responseMessage}</p>
+          <button
+            type="submit"
+            className="btn btn-outline-dark"
+            style={this.state.buttonStatus}
+          >
+            Save
+          </button>
+        </div>   
       </form>
     );
   }

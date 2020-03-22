@@ -17,14 +17,25 @@ export default class DailyWorkEntry extends React.Component {
         "http://127.0.0.1:8000/list-of-vehicles/"
       );
       const jsonVehicleList = await responseVehicleList.json();
-      jsonVehicleList.map(item =>
-        this.setState({ 
-          vehicleNamesFromApi: [...this.state.vehicleNamesFromApi, item.name] 
-        })
-      );
-    } catch {
-      this.toggleLoadStatus();
-    }
+      
+      if(jsonVehicleList.length > 0){
+
+        this.state.vehicleNamesFromApi= [];
+        jsonVehicleList.map(item =>
+          this.setState({ 
+            vehicleNamesFromApi: [...this.state.vehicleNamesFromApi, item.name] 
+          })
+        );
+
+        this.setState({
+          selectedVehicle: this.state.vehicleNamesFromApi[0]
+        });
+      }
+      else{
+        this.toggleLoadStatus();
+      }
+    } 
+    catch {}
   };
 
   checkVehicle = datafromparent => {};
@@ -62,22 +73,22 @@ export default class DailyWorkEntry extends React.Component {
 
   // toggle load status
   toggleLoadStatus = async () => {
-    if (this.state.loadingStatus.visibility === "visible") {
+    if (this.state.loadingStatus.display === "block") {
       await this.setState({
         loadingStatus: {
-          visibility: "hidden"
+          display: "none"
         },
         loadedStatus: {
-          visibility: "visible"
+          display: "block"
         }
       });
     } else {
       await this.setState({
         loadingStatus: {
-          visibility: "visible"
+          display: "block"
         },
         loadedStatus: {
-          visibility: "hidden"
+          display: "none"
         }
       });
     }
@@ -105,10 +116,10 @@ export default class DailyWorkEntry extends React.Component {
         visibility: "visible"
       },
       loadingStatus: {
-        visibility: "visible"
+        display: "block"
       },
       loadedStatus: {
-        visibility: "hidden"
+        display: "none"
       }
     };
     this.fetchProduct = this.fetchProduct.bind(this);
@@ -128,119 +139,121 @@ export default class DailyWorkEntry extends React.Component {
             className="form-container form-group"
             onSubmit={e => this.onSubmit(e)}
           >
-            <p className="headingViewPart">Daily Work Entry</p>
-            <div className="pt-5">
-              <InputPartyNameField
-                callbackFromParent={dataFromChild => {
-                  this.state.partyName = dataFromChild;
-                }}
-              />
+            <h3 style={this.state.loadingStatus}>There is no any vehicle registered</h3>
+            <div style={this.state.loadedStatus}>
+              <p className="headingViewPart">Daily Work Entry</p>
+              <div className="pt-5">
+                <InputPartyNameField
+                  callbackFromParent={dataFromChild => {
+                    this.state.partyName = dataFromChild;
+                  }}
+                />
 
-              <br />  
-              <br />
+                <br />  
+                <br />
 
-              <select onChange={e => this.state.selectedVehicle=e.target.value}>
-                {this.state.vehicleNamesFromApi.map((item) => (
-                    <option value={item} key={item}>{item}</option>
-                ))}
-              </select> 
+                <select onChange={e => this.state.selectedVehicle=e.target.value}>
+                  {this.state.vehicleNamesFromApi.map((item) => (
+                      <option value={item}>{item}</option>
+                  ))}
+                </select> 
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputPartyVillageField
-                callbackFromParent={dataFromChild => {
-                  this.state.partyVillage = dataFromChild;
-                }}
-              />
+                <InputPartyVillageField
+                  callbackFromParent={dataFromChild => {
+                    this.state.partyVillage = dataFromChild;
+                  }}
+                />
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputDateField
-                callbackFromParent={dataFromChild => {
-                  this.state.date = dataFromChild;
-                }}
-              />
+                <InputDateField
+                  callbackFromParent={dataFromChild => {
+                    this.state.date = dataFromChild;
+                  }}
+                />
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputRateField
-                placeholderParent="5 Feet"
-                callbackFromParent={dataFromChild => {
-                  this.state.fiveFeet = dataFromChild;
-                }}
-              />
+                <InputRateField
+                  placeholderParent="5 Feet"
+                  callbackFromParent={dataFromChild => {
+                    this.state.fiveFeet = dataFromChild;
+                  }}
+                />
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputRateField
-                placeholderParent={"5 Feet Rate"}
-                callbackFromParent={dataFromChild => {
-                  this.state.fiveFeetRate = dataFromChild;
-                }}
-              />
+                <InputRateField
+                  placeholderParent={"5 Feet Rate"}
+                  callbackFromParent={dataFromChild => {
+                    this.state.fiveFeetRate = dataFromChild;
+                  }}
+                />
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputRateField
-                placeholderParent="2.5 Feet"
-                callbackFromParent={dataFromChild => {
-                  this.state.twoHalfFeet = dataFromChild;
-                }}
-              />
+                <InputRateField
+                  placeholderParent="2.5 Feet"
+                  callbackFromParent={dataFromChild => {
+                    this.state.twoHalfFeet = dataFromChild;
+                  }}
+                />
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputRateField
-                callbackFromParent={dataFromChild => {
-                  this.state.twoHalfFeetRate = dataFromChild;
-                }}
-                placeholderParent={"2.5 Feet Rate"}
-              />
+                <InputRateField
+                  callbackFromParent={dataFromChild => {
+                    this.state.twoHalfFeetRate = dataFromChild;
+                  }}
+                  placeholderParent={"2.5 Feet Rate"}
+                />
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputRateField
-                placeholderParent="Diesel in Money"
-                callbackFromParent={dataFromChild => {
-                  this.state.dieselSpend = dataFromChild;
-                }}
-              />
+                <InputRateField
+                  placeholderParent="Diesel Spend"
+                  callbackFromParent={dataFromChild => {
+                    this.state.dieselSpend = dataFromChild;
+                  }}
+                />
 
-              <br />
-              <br />
+                <br />
+                <br />
 
-              <InputRateField
-                placeholderParent="Received Amount"
-                callbackFromParent={dataFromChild => {
-                  this.state.receivedAmount = dataFromChild;
-                }}
-              />
-              <br />
-              <br />
+                <InputRateField
+                  placeholderParent="Received Amount"
+                  callbackFromParent={dataFromChild => {
+                    this.state.receivedAmount = dataFromChild;
+                  }}
+                />
+                <br />
+                <br />
 
-              <InputRemarkField
-                placeholderParent="Remark"
-                callbackFromParent={dataFromChild => {
-                  this.state.remark = dataFromChild;
-                }}
-              />
+                <InputRemarkField
+                  placeholderParent="Remark"
+                  callbackFromParent={dataFromChild => {
+                    this.state.remark = dataFromChild;
+                  }}
+                />
+              </div>
+              <p>{this.state.responseMessage}</p>
+              <button
+                type="submit"
+                className="btn btn-outline-dark"
+                style={this.state.buttonStatus}
+              >
+                Save
+              </button>
             </div>
-            <p>{this.state.responseMessage}</p>
-            <p>{this.state.totalAmount}</p>
-            <button
-              type="submit"
-              className="btn btn-outline-dark"
-              style={this.state.buttonStatus}
-            >
-              Save
-            </button>
           </form>
         </div>  
       </div>  
