@@ -12,12 +12,45 @@ class PurchaseDebit extends React.Component{
                 "http://127.0.0.1:8000/list-of-purchaseparty/" 
             );
             const jsonPartyList = await responsePartyList.json();
-            jsonPartyList.map(item => this.state.partyNamesFromApi.push(item.name));
-            this.state.partyList = jsonPartyList;
+            
+            if(jsonPartyList.length > 0){
+                jsonPartyList.map(item =>
+                    this.setState({
+                        partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
+                    }) 
+                );
+            }
+            else{
+                this.toggleLoadStatus();
+            }
         }
         catch {
         }
     };
+
+  // toggle load status
+  toggleLoadStatus = async () => {
+    if (this.state.loadingStatus.visibility === "visible") {
+      await this.setState({
+        loadingStatus: {
+          visibility: "hidden"
+        },
+        loadedStatus: {
+          visibility: "visible"
+        }
+      });
+    } else {
+      await this.setState({
+        loadingStatus: {
+          visibility: "visible"
+        },
+        loadedStatus: {
+          visibility: "hidden"
+        }
+      });
+    }
+  };
+    
 
   //form Handler Submitting
   onSubmit = async () => {
@@ -82,7 +115,6 @@ class PurchaseDebit extends React.Component{
             startDate: null,
             endDate: null,
             currentDebit: [],
-            partyList: {},
             selectedParty: "",
             partyNamesFromApi: [],
             input:{
@@ -90,14 +122,26 @@ class PurchaseDebit extends React.Component{
             },
             table:{
                 display: "none"
+            },
+            loadingStatus: {
+                visibility: "visible"
+            },
+            loadedStatus: {
+                visibility: "hidden"
             }
         }
         
         this.fetchProduct= this.fetchProduct.bind(this);
         this.onSubmit= this.onSubmit.bind(this);
         this.setDateFilter= this.setDateFilter.bind(this);
+        this.toggleLoadStatus= this.toggleLoadStatus.bind(this);
         this.fetchProduct();
     }
+
+    componentDidMount(){
+        this.toggleLoadStatus();
+    }
+
     render(){
         //Clean old data
         this.state.currentDebit=[];
@@ -191,6 +235,8 @@ class PurchaseDebit extends React.Component{
                     className="form-container form-group"
                     style={this.state.input}
                 >
+                    <h3 style={this.state.loadingStatus}>There is no purchase party</h3>
+                    <div style={this.state.loadedStatus}>
                         <p className="headingViewPart">Purchase Party Debit</p>
                         <br />
 
@@ -210,6 +256,7 @@ class PurchaseDebit extends React.Component{
                             onClick={e => this.onSubmit()}>
                         Show
                         </button>
+                    </div>    
                 </form>
             </div>    
         );

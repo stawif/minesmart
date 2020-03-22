@@ -109,22 +109,22 @@ export default class MachineSupplyEntry extends React.Component {
 
   // toggle load status
   toggleLoadStatus = async () => {
-    if (this.state.loadingStatus.visibility === "visible") {
+    if (this.state.loadingStatus.display === "block") {
       await this.setState({
         loadingStatus: {
-          visibility: "hidden"
+          display: "none"
         },
         loadedStatus: {
-          visibility: "visible"
+          display: "block"
         }
       });
     } else {
       await this.setState({
         loadingStatus: {
-          visibility: "visible"
+          display: "block"
         },
         loadedStatus: {
-          visibility: "hidden"
+          display: "none"
         }
       });
     }
@@ -146,10 +146,10 @@ export default class MachineSupplyEntry extends React.Component {
         visibility: "visible"
       },
       loadingStatus: {
-        visibility: "visible"
+        display: "block"
       },
       loadedStatus: {
-        visibility: "hidden"
+        display: "none"
       }
     };
 
