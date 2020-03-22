@@ -4,7 +4,7 @@ import '../../homePage.css';
 import './entry.css';
 import InputPartyNameField from "../modular/InputPartyNameField";
 import InputDateField from "../modular/InputDateField";
-import Autocomplete from "./AutoComplete";
+//import Autocomplete from "./AutoComplete";
 import InputPartyVillageField from "../modular/InputPartyVillageField";
 import InputRateField from "../modular/InputRateField";
 import InputRemarkField from "../modular/InputRemarkField";
@@ -59,7 +59,8 @@ export default class DailyWorkEntry extends React.Component {
       .then(res => {
         this.fetchProduct();
         this.setState({
-          responseMessage: res.data
+          responseMessage: res.data,
+          totalAmount: "Net Amount "+(((this.state.fiveFeet)*(this.state.fiveFeetRate)) + ((this.state.twoHalfFeet)*(this.state.twoHalfFeetRate)))
         });
       })
       .catch(error => {
@@ -110,6 +111,7 @@ export default class DailyWorkEntry extends React.Component {
       receivedAmount: 0,
       remark: "",
       responseMessage: "",
+      totalAmount: "",
       buttonStatus: {
         visibility: "visible"
       },
