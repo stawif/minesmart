@@ -10,7 +10,8 @@ export default class MachineRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-machines/"
       );
       const jsonMachineList = await responseMachineList.json();
-      this.state.machineList = jsonMachineList;
+      this.setState({machineList: jsonMachineList})
+      // this.state.machineList = jsonMachineList;
     } catch {
       this.toggleLoadStatus();
     }
@@ -124,7 +125,10 @@ export default class MachineRegistration extends React.Component {
               minLengthh={"5"}
               placeholderParent={"Machine Name"}
               callbackFromParent={dataFromChild => {
-                this.state.machineName = dataFromChild;
+
+                //this.setState({machineName: dataFromChild})
+
+                 this.state.machineName = dataFromChild;
                 this.checkMachine();
               }}
             />
