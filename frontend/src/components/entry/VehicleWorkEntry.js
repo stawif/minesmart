@@ -14,7 +14,11 @@ export default class VehicleWorkEntry extends React.Component {
       );
       const jsonPartyList = await responsePartyList.json();
       if(jsonPartyList.length > 0){
-        jsonPartyList.map(item => this.state.partyNamesFromApi.push(item.name));
+        jsonPartyList.map(item =>
+          this.setState({
+            partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
+          }) 
+        );
       }
       else{
         this.toggleLoadStatus();

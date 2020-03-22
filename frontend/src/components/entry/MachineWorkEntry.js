@@ -28,11 +28,17 @@ export default class MachineWorkEntry extends React.Component {
               partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
             }) 
           );
+
+          this.state.machineNamesFromApi=[];
           jsonMachineList.map(item =>
             this.setState({ 
               machineNamesFromApi: [...this.state.machineNamesFromApi, item.name] 
             })
           );
+
+          this.setState({
+            selectedMachine: this.state.machineNamesFromApi[0]
+          });
       }
       else{
         this.toggleLoadStatus();

@@ -24,12 +24,17 @@ export default class MachineSupplyEntry extends React.Component {
             partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
           }) 
         );
-  
+        
+        this.state.materialNamesFromApi= [];
         jsonMaterialList.map(item =>
           this.setState({ 
             materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
           })
         );
+
+        this.setState({
+          selectedMaterial: this.state.materialNamesFromApi[0]
+        });
       }
       else{
         this.toggleLoadStatus();

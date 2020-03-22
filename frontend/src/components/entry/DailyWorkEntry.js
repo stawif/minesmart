@@ -19,11 +19,17 @@ export default class DailyWorkEntry extends React.Component {
       const jsonVehicleList = await responseVehicleList.json();
       
       if(jsonVehicleList.length > 0){
+
+        this.state.vehicleNamesFromApi= [];
         jsonVehicleList.map(item =>
           this.setState({ 
             vehicleNamesFromApi: [...this.state.vehicleNamesFromApi, item.name] 
           })
         );
+
+        this.setState({
+          selectedVehicle: this.state.vehicleNamesFromApi[0]
+        });
       }
       else{
         this.toggleLoadStatus();

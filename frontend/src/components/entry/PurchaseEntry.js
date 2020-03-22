@@ -27,12 +27,17 @@ export default class PurchaseEntry extends React.Component {
             partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
           })
         );
-  
+          
+        this.state.materialNamesFromApi= [];
         jsonItemList.map(item => 
           this.setState({ 
             materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
           })
         );
+
+        this.setState({
+          selectedMaterial: this.state.materialNamesFromApi[0]
+        });
       } 
       else{
         this.toggleLoadStatus();

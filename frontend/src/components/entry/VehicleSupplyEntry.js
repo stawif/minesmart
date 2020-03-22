@@ -14,11 +14,16 @@ export default class VehicleSupplyEntry extends React.Component {
       );
       const jsonItemList = await responseItemList.json();
       if(jsonItemList.length > 0){
+
+        this.state.materialNamesFromApi= [];
         jsonItemList.map(item => 
           this.setState({ 
             materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
           })
         );
+        this.setState({
+          selectedMaterial: this.state.materialNamesFromApi[0]
+        });
       }
       else{
         this.toggleLoadStatus();
