@@ -22,12 +22,14 @@ export default class PurchaseEntry extends React.Component {
       const jsonItemList = await responseItemList.json();
 
       if(jsonPartyList.length > 0 && jsonItemList.length > 0){
+        this.state.partyNamesFromApi= [];
         jsonPartyList.map(item => 
           this.setState({
             partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
           })
         );
-          
+        
+        this.state.materialNamesFromApi= [];
         this.state.materialNamesFromApi= [];
         jsonItemList.map(item => 
           this.setState({ 

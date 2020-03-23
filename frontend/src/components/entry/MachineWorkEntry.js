@@ -23,6 +23,7 @@ export default class MachineWorkEntry extends React.Component {
       const jsonMachineList = await responseMachineList.json();
       
       if(jsonPartyList.length > 0 && jsonMachineList.length > 0){
+        this.state.partyNamesFromApi= [];
           jsonPartyList.map(item =>
             this.setState({
               partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
@@ -47,51 +48,6 @@ export default class MachineWorkEntry extends React.Component {
     catch {}
   };
 
-  // Check existence of party name
-  checkParty = dataFromChild => {
-    try {
-      this.setState({
-        responseMessage: "",
-        buttonStatus: {
-          visibility: "hidden"
-        }
-      });
-      const showList = item => {
-        if (dataFromChild.toLowerCase() === item.toLowerCase()) {
-          this.setState({
-            buttonStatus: {
-              visibility: "visible"
-            }
-          });
-        } else {
-        }
-      };
-      this.state.partyNamesFromApi.forEach(showList);
-    } catch (err) {}
-  };
-
-  //Check Existance for MAchine name
-  checkMachine = dataFromChild => {
-    try {
-      this.setState({
-        responseMessage: "",
-        buttonStatus: {
-          visibility: "hidden"
-        }
-      });
-      const showList = item => {
-        if (dataFromChild.toLowerCase() === item.toLowerCase()) {
-          this.setState({
-            buttonStatus: {
-              visibility: "visible"
-            }
-          });
-        } else {
-        }
-      };
-      this.state.machineNamesFromApi.forEach(showList);
-    } catch (err) {}
-  };
 
   //form Handler Submitting
   onSubmit = e => {
@@ -169,8 +125,6 @@ export default class MachineWorkEntry extends React.Component {
     };
 
     this.fetchProduct = this.fetchProduct.bind(this);
-    this.checkParty = this.checkParty.bind(this);
-    this.checkMachine = this.checkMachine.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.toggleLoadStatus = this.toggleLoadStatus.bind(this);
     this.fetchProduct();
@@ -197,7 +151,6 @@ export default class MachineWorkEntry extends React.Component {
                   callbackFromParent={dataFromChild => {
                     this.state.selectedParty = dataFromChild;
                   }}
-                  checkFromParent={this.checkParty}
                   placeholderfrom={"Party name"}
                 />
 
