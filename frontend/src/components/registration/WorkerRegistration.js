@@ -60,8 +60,7 @@ export default class WorkerRegistration extends React.Component {
         contact: this.state.workerContact,
         village: this.state.workerVillage,
         salary: this.state.workerSalary,
-        advance: this.state.advance,
-        date: this.state.date
+        advance: this.state.advance
       })
       .then(res => {
         this.fetchProduct();
@@ -109,7 +108,6 @@ export default class WorkerRegistration extends React.Component {
       workerVillage: "",
       workerSalary: 0,
       advance: 0,
-      date: null,
       workerList: {},
       workerExistMessage: "",
       responseMessage: "",
@@ -177,15 +175,6 @@ export default class WorkerRegistration extends React.Component {
             placeholder={"Worker Salary"}
             callbackFromParent={dataFromChild => {
               this.state.workerSalary = dataFromChild;
-            }}
-          />
-
-          <br />
-          <br />
-
-          <InputDateField
-            callbackFromParent={dataFromChild => {
-              this.state.date = dataFromChild;
             }}
           />
           <br />

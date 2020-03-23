@@ -158,7 +158,6 @@ class Worker(models.Model):
     contact = models.IntegerField(blank=False)
     village = models.CharField(max_length=30,blank=False)
     salary = models.IntegerField(blank=False)
-    exit_date = models.DateField(blank=True,null=True)
 
     def __str__(self):
         return self.name    
@@ -267,6 +266,7 @@ class Purchase(models.Model):
     net_amount = models.FloatField(blank=False)
     remark = models.CharField(max_length=50, blank=True)
     paid = models.BooleanField(default=False)
+    payment = models.FloatField(blank=False)
 
     def __str__(self):
         return str(self.party)    

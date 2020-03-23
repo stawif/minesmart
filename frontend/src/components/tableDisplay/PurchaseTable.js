@@ -114,7 +114,9 @@ class PurchaseTabel extends React.Component{
 
     //Prepare data for netAmount
     preparePaymentData = (item, index) =>{
-        this.state.totalPayment= this.state.totalPayment + item.net_amount;
+        this.state.totalNetAmount= this.state.totalNetAmount + item.net_amount;
+        this.state.totalPaid= this.state.totalPaid + item.payment;
+        this.state.totalPayment= this.state.totalNetAmount - this.state.totalPaid;
     }
 	
 
@@ -164,6 +166,8 @@ class PurchaseTabel extends React.Component{
             netAmount: 0,
             rate: 0,
             totalPayment: 0,
+            totalNetAmount: 0,
+            totalPaid: 0,
             remark: "",
             buttonStatus: {
                 visibility: "hidden"
@@ -203,6 +207,8 @@ class PurchaseTabel extends React.Component{
         this.state.currentPurchase=[];
 
         //Reset total values of lower strip
+        this.state.totalNetAmount= 0;
+        this.state.totalPaid= 0;
         this.state.totalPayment= 0;
 
         //Fill different lists
@@ -312,11 +318,13 @@ class PurchaseTabel extends React.Component{
                     <div className="col-6">    
                         {/*netAmount popup*/}
                         <Popup modal trigger={
-                            <button className="bg-warning">netAmount</button>
+                            <button className="bg-warning">Remaining</button>
                         }
 						>
 
-                        <p>Total Payment= {this.state.totalPayment}</p>
+                        <p>Total Payment= {this.state.totalNetAmount}</p>
+                        <p>Total Paid {this.state.totalPaid}</p>
+                        <p>Remaining {this.state.totalPayment}</p>
                             <Popup modal trigger={
                                     <button
                                         className="btn btn-outline-dark style"
@@ -332,7 +340,7 @@ class PurchaseTabel extends React.Component{
                                             onSubmit={e => this.onSubmit(e)}
                                         >
 											{this.state.minDate} to {this.state.maxFilterDate}
-                                            <p>Total Payment: {this.state.totalPayment}</p>
+                                            <p>Need to pay: {this.state.totalPayment}</p>
                                             <input type="text" placeholder="Remark" className="remark" onChange={e => this.setState({ remark: e.target.value })} />
                                             <hr />
                                             <button
@@ -361,6 +369,7 @@ class PurchaseTabel extends React.Component{
                                 <th>Quantity</th>
                                 <th>Rate</th>
                                 <th>Net Amount</th>
+                                <th>Paid</th>
                                 <th>Remark</th>
                             </tr>
                         </thead>
@@ -373,6 +382,7 @@ class PurchaseTabel extends React.Component{
                                     <td>{purchase.quantity}</td>
                                     <td>{purchase.rate}</td>
                                     <td>{purchase.net_amount}</td>
+                                    <td>{purchase.payment}</td>
                                     <td>{purchase.remark}</td>
                                 </tr>
                             ))}
@@ -382,24 +392,28 @@ class PurchaseTabel extends React.Component{
 
                 <div className="row lowerTable text-center bg-warning commonFont justify-content-center align-items-center">
                     <div className="col-sm-2">
-						<p>Total Payment</p>
+						<p>Total payment</p>
                     </div>
 					
 					<div className="col-sm-1">
-						<p>{this.state.totalPayment}</p>
+						<p>{this.state.totalNetAmount}</p>
 					</div>
 
 					<div className="col-sm-2">
+                        <p>Paid</p>
 					</div>
 					
 					<div className="col-sm-1">
+                        <p>{this.state.totalPaid}</p>
 					</div>
 
 
 					<div className="col-sm-2">
+                        <p>Remaining</p>
 					</div>
 					
 					<div className="col-sm-1">
+                        <p>{this.state.totalPayment}</p>
 					</div>
 
                         <div className="col-sm-3">
@@ -418,7 +432,7 @@ class PurchaseTabel extends React.Component{
                                         <h3>Payment</h3>
                                         <br/>
                                         {this.state.minDate} to {this.state.maxFilterDate}
-                                        <p>Total Payment : {this.state.totalPayment}</p>
+                                        <p>Need to pay : {this.state.totalPayment}</p>
                                         <input type="text" placeholder="Remark" className="remark" onChange={e => this.setState({ remark: e.target.value })} />
                                         <hr />
                                         <button

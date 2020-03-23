@@ -16,6 +16,7 @@ class WorkerDebit extends React.Component{
       const jsonWorkerList = await responseWorkerList.json();
       
       if(jsonWorkerList.length > 0){
+        this.state.workerNamesFromApi= [];
         jsonWorkerList.map(item => 
           this.setState({
             workerNamesFromApi: [...this.state.workerNamesFromApi, item.name]
@@ -39,6 +40,7 @@ class WorkerDebit extends React.Component{
           remark: this.state.remark
       })
       .then(res => {
+        this.fetchProduct();
         this.setState({
           responseMessage: res.data
         });

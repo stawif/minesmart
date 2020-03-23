@@ -19,6 +19,7 @@ export default class MachineSupplyEntry extends React.Component {
       const jsonMaterialList = await responseMaterialList.json();
       
       if(jsonMachineList.length > 0 && jsonMaterialList.length > 0){
+        this.state.partyNamesFromApi= [];
         jsonMachineList.map(item =>
           this.setState({
             partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]

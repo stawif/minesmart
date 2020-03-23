@@ -98,7 +98,7 @@ class WorkerList(APIView):
     View to return List of party
     """
     def get(self,request):
-        queryset = Worker.objects.all().order_by('exit_date')
+        queryset = Worker.objects.all()
         serializer = WorkerSerializer(queryset,many=True)
         return Response(serializer.data)
 
@@ -526,14 +526,13 @@ class AddWorker(APIView):
         try:
             api_name = request.data['name']
             api_contact = request.data['contact']
-            api_date = request.data['date']
             api_village = request.data['village']
             api_salary = request.data['salary']
         except Exception as e:
             return Response('please provide all information correctly',status=status.HTTP_204_NO_CONTENT)
         if request.data:
             try:
-                mix_debit_create_i = MixDebit.objects.create(owner=owner,date=api_date,category="worker_debit")
+                mix_debit_create_i = MixDebit.objects.create(owner=owner,category="worker_debit")
             except Exception:
                 return Response("please provide correct data",status=status.HTTP_400_BAD_REQUEST)
             try:
@@ -635,9 +634,10 @@ class AddPurchase(APIView):
             net_amount = api_quantity*api_rate
             api_remark = request.data['remark']
             api_date = request.data['date']
+            api_payment = request.data['payment']
             
             purchase_create = Purchase.objects.create(party=purchase_party,material=Material_instance,rate=api_rate,
-            date =api_date,quantity=api_quantity,net_amount=net_amount,remark=api_remark)
+            date =api_date,quantity=api_quantity,net_amount=net_amount,remark=api_remark,payment=api_payment)
             
             new_quantity = Material_instance.quantity+api_quantity
             Material.objects.filter(name=request.data['material']).update(quantity=new_quantity)          
@@ -654,6 +654,7 @@ class AddDailyWork(APIView):
     _i is for indication that this data is a model instance
     """
     def post(self,request):
+        owner_i = Owner.objects.get(id=1)
         try:
             api_name = request.data['name']
             api_vehicle = request.data['vehicle']
@@ -675,9 +676,28 @@ class AddDailyWork(APIView):
             return Response("Vehicle does not exists")
         net_amount = float(api_five_feet)*float(api_five_feet_rate)+float(api_two_half_feet)*float(api_two_half_feet_rate)
         try:
-            owner = Owner.objects.get(id=1)
+            #Enter daily Expense,MixDebit,Debit for diesel spend amount
+            try:       
+                try:
+                    debit_id = MixDebit.objects.create(owner=owner_i,date=api_date,category="daily_expense_debit")
+                except Exception as e:
+                    return Response('mix debit not created,please try again')
+                try:
+                    daily_expense_i = DailyExpense.objects.create(owner=owner_i,debit_id=debit_id,category='petrol')
+                except Exception as e:
+                    debit_id.delete()
+                    return Response('please provie correct information',status=status.HTTP_204_NO_CONTENT)
+                try:
+                    debit_i = Debit.objects.create(owner=owner_i,debit_id=debit_id,date=api_date,remark=api_remark,debit_amount=api_diesel_spend)
+                except Exception as e:
+                    debit_id.delete()
+                    daily_expense_i.delete()
+                    return Response('network error.please try again',status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response('network error.please try again',status=status.HTTP_400_BAD_REQUEST)
+            #Save daily work ,mix credit, credit .
             try:
-                credit_id_i = MixCredit.objects.create(owner=owner,date=api_date,category="daily_work")
+                credit_id_i = MixCredit.objects.create(owner=owner_i,date=api_date,category="daily_work")
             except Exception as e:
                 return Response('please provide all information',status=status.HTTP_204_NO_CONTENT)
             try:
@@ -688,7 +708,7 @@ class AddDailyWork(APIView):
                 credit_id_i.delete()
                 return Response('daily work not saved,please try again',status=status.HTTP_204_NO_CONTENT)
             try:
-                credit_i = Credit.objects.create(owner=owner,work=credit_id_i,date=api_date,credit_amount=float(api_received_amount),remark=api_remark)
+                credit_i = Credit.objects.create(owner=owner_i,work=credit_id_i,date=api_date,credit_amount=float(api_received_amount),remark=api_remark)
                 return Response('daily work added for party {}'.format(api_name),status=status.HTTP_200_OK)
             except Exception as e:
                 daily_work_i.delete()
@@ -847,6 +867,7 @@ class AddDailyExpense(APIView):
         try:
             daily_expense_i = DailyExpense.objects.create(owner=owner_i,debit_id=debit_id,category=api_category)
         except Exception as e:
+            debit_id.delete()
             return Response('please provie correct information',status=status.HTTP_204_NO_CONTENT)
         try:
             debit_i = Debit.objects.create(owner=owner_i,debit_id=debit_id,date=api_date,remark=api_remark,debit_amount=api_expense)
@@ -1100,7 +1121,7 @@ class PurchaseDetail(APIView):
             return Response('purchase party does not exists',status=status.HTTP_200_OK)
         try:
             purchase_detail = Purchase.objects.filter(party=party_detail).values('date','material','quantity','remark','paid',
-                                                    'rate','net_amount').order_by('date')
+                                                    'rate','net_amount','payment').order_by('date')
             for i in purchase_detail:
                 material = Material.objects.get(id=i['material'])
                 i['material']=material.name

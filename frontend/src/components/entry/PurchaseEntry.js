@@ -22,12 +22,14 @@ export default class PurchaseEntry extends React.Component {
       const jsonItemList = await responseItemList.json();
 
       if(jsonPartyList.length > 0 && jsonItemList.length > 0){
+        this.state.partyNamesFromApi= [];
         jsonPartyList.map(item => 
           this.setState({
             partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
           })
         );
-          
+        
+        this.state.materialNamesFromApi= [];
         this.state.materialNamesFromApi= [];
         jsonItemList.map(item => 
           this.setState({ 
@@ -101,6 +103,7 @@ export default class PurchaseEntry extends React.Component {
         date: this.state.date,
         quantity: this.state.quantity,
         rate: this.state.rate,
+        payment: this.state.payment,
         remark: this.state.remark
       })
       .then(res => {
@@ -152,6 +155,7 @@ export default class PurchaseEntry extends React.Component {
       quantity: 0,
       rate: 0,
       responseMessage: "",
+      payment: "",
       buttonStatus: {
         visibility: "visible"
       },
@@ -236,6 +240,16 @@ export default class PurchaseEntry extends React.Component {
               placeholderParent={"Rate"}
               callbackFromParent={dataFromChild => {
                 this.state.rate = dataFromChild;
+              }}
+            />
+
+            <br/>
+            <br/>
+
+            <InputRateField 
+              placeholderParent={"Paid"}
+              callbackFromParent={dataFromChild =>{
+                this.state.payment = dataFromChild;
               }}
             />
           </div>

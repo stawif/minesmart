@@ -361,7 +361,7 @@ class VehicleWorkTable extends React.Component{
                         <p>Feet= {this.state.feet}</p>
                         <p>2.5 Feet= {this.state.twoHalfFeetQuantity}</p>
                         <p>5 Feet= {this.state.fiveFeetQuantity}</p>
-                        <p>Payment= {this.state.payment}</p>
+                        <p>Paid= {this.state.payment}</p>
                             <Popup modal trigger={
                                     <button
                                         className="btn btn-outline-dark style"
@@ -417,7 +417,7 @@ class VehicleWorkTable extends React.Component{
                                 <th>Feet</th>
                                 <th>Two Half Feet</th>
                                 <th>Five Feet</th>
-                                <th>Payment</th>
+                                <th>Paid</th>
                                 <th>Remark</th>
                             </tr>
                         </thead>
@@ -456,7 +456,7 @@ class VehicleWorkTable extends React.Component{
 
 
 					<div className="col-sm-2">
-						<p>Payment =</p>
+						<p>Paid =</p>
 					</div>
 					
 					<div className="col-sm-1">

@@ -65,10 +65,9 @@ class WorkerSerializer(serializers.ModelSerializer):
     """
     Serializer for worker model
     """
-    entry_date = serializers.CharField(source='debit_id.date')
     class Meta:
         model = Worker
-        fields = ['name','contact','village','salary','exit_date','entry_date']
+        fields = ['name','contact','village','salary']
 
 # class PartySerializer(serializers.ModelSerializer):
 #     """
@@ -136,7 +135,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
     material_name = serializers.CharField(source='material.name')
     class Meta:
         model = Purchase
-        fields = ['party_name','material_name','rate','net_amount','paid','remark']
+        fields = ['party_name','material_name','rate','net_amount','paid','remark','payment']
 
 """
 class DailyExpenseSerializer(serializers.ModelSerializer):

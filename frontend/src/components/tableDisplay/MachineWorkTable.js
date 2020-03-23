@@ -349,7 +349,7 @@ class MachineWorkTable extends React.Component{
 
                         <p>Drilling Feet= {this.state.drillingFeet}</p>
                         <p>Diesel Quantity= {this.state.dieselQuantity}</p>
-                        <p>Payment= {this.state.payment}</p>
+                        <p>Paid= {this.state.payment}</p>
                             <Popup modal trigger={
                                     <button
                                         className="btn btn-outline-dark style"
@@ -403,7 +403,7 @@ class MachineWorkTable extends React.Component{
                                 <th>Holes</th>
                                 <th>Diesel Amount</th>
                                 <th>Machine</th>
-                                <th>Payment</th>
+                                <th>Paid</th>
                                 <th>Remark</th>
                             </tr>
                         </thead>
@@ -443,7 +443,7 @@ class MachineWorkTable extends React.Component{
 
 
 					<div className="col-sm-2">
-						<p>Payment =</p>
+						<p>Paid =</p>
 					</div>
 					
 					<div className="col-sm-1">

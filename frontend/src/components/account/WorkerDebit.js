@@ -12,6 +12,7 @@ class WorkerDebit extends React.Component{
             );
             const jsonPartyList = await responsePartyList.json();
             if(jsonPartyList.length > 0){
+                this.state.workerNamesFromApi= [];
                 jsonPartyList.map(item => 
                     this.setState({
                         workerNamesFromApi: [...this.state.workerNamesFromApi, item.name]

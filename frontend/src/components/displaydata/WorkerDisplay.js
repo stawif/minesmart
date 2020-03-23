@@ -24,8 +24,6 @@ class WorkerDisplay extends React.Component {
 								<th>Contact</th>
 								<th>Village</th>
 								<th>Salary</th>
-								<th>Exit Date</th>
-								<th>Entry Date</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -35,8 +33,6 @@ class WorkerDisplay extends React.Component {
 								<td>{todo.contact}</td>
 								<td>{todo.village}</td>
 								<td>{todo.salary}</td>
-								<td>{todo.exit_date}</td>
-								<td>{todo.entry_date}</td>
 							</tr>
 							))}
 						</tbody>
