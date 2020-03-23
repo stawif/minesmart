@@ -417,7 +417,7 @@ class VehicleWorkTable extends React.Component{
                                 <th>Feet</th>
                                 <th>Two Half Feet</th>
                                 <th>Five Feet</th>
-                                <th>Payment</th>
+                                <th>Paid</th>
                                 <th>Remark</th>
                             </tr>
                         </thead>
