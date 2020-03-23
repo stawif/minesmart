@@ -14,11 +14,19 @@ class WorkerDebit extends React.Component{
         "http://127.0.0.1:8000/list-of-worker/"
       );
       const jsonWorkerList = await responseWorkerList.json();
-
-      jsonWorkerList.map(item => this.state.workerNamesFromApi.push(item.name));
-    } catch {
-      this.toggleLoadStatus();
-    }
+      
+      if(jsonWorkerList.length > 0){
+        jsonWorkerList.map(item => 
+          this.setState({
+            workerNamesFromApi: [...this.state.workerNamesFromApi, item.name]
+          })
+        );
+      }
+      else{
+        this.toggleLoadStatus();
+      }
+    } 
+    catch {}
   };
 
   //form Handler Submitting
@@ -42,7 +50,32 @@ class WorkerDebit extends React.Component{
     e.target.reset();
     e.preventDefault();
   };
+  // toggle load status
+  toggleLoadStatus = async () => {
+    if (this.state.loadingStatus.visibility === "visible") {
+      await this.setState({
+        loadingStatus: {
+          visibility: "hidden"
+        },
+        loadedStatus: {
+          visibility: "visible"
+        }
+      });
+    } else {
+      await this.setState({
+        loadingStatus: {
+          visibility: "visible"
+        },
+        loadedStatus: {
+          visibility: "hidden"
+        }
+      });
+    }
+  };
 
+  componentDidMount() {
+    this.toggleLoadStatus();
+  }
   constructor(props){
         super(props);
         this.state={
@@ -51,11 +84,18 @@ class WorkerDebit extends React.Component{
             date: null,
             remark: "",
             workerNamesFromApi: [],
-            responseMessage: ""
+            responseMessage: "",
+            loadingStatus: {
+              visibility: "visible"
+            },
+            loadedStatus: {
+              visibility: "hidden"
+            }
         }
 
         this.fetchProduct= this.fetchProduct.bind(this);
         this.onSubmit= this.onSubmit.bind(this);
+        this.toggleLoadStatus= this.toggleLoadStatus.bind(this);
         
         this.fetchProduct();
     }    
@@ -65,8 +105,9 @@ class WorkerDebit extends React.Component{
             <form
             className="form-container form-group"
             onSubmit={e => this.onSubmit(e)} >
+              <h3 style={this.state.loadingStatus}>There is no worker currently</h3>
+              <div style={this.state.loadedStatus}>
                 <p className="headingViewPart">Worker Debit Entry</p>
-                
                 <br />
                 <Autocomplete
                     suggestions={this.state.workerNamesFromApi}
@@ -118,7 +159,9 @@ class WorkerDebit extends React.Component{
                 >
                 Save
                 </button>
+              </div>  
             </form>
+            
         );
     };
 }

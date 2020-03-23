@@ -16,21 +16,34 @@ export default class PurchaseEntry extends React.Component {
       );
       const jsonPartyList = await responsePartyList.json();
 
-      jsonPartyList.map(item => this.state.partyNamesFromApi.push(item.name));
-
       const responseItemList = await fetch(
         "http://127.0.0.1:8000/list-of-material/"
       );
       const jsonItemList = await responseItemList.json();
 
-      jsonItemList.map(item => 
-        this.setState({ 
-          materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
-        })
-      );
-    } catch {
-      this.toggleLoadStatus();
-    }
+      if(jsonPartyList.length > 0 && jsonItemList.length > 0){
+        jsonPartyList.map(item => 
+          this.setState({
+            partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
+          })
+        );
+          
+        this.state.materialNamesFromApi= [];
+        jsonItemList.map(item => 
+          this.setState({ 
+            materialNamesFromApi: [...this.state.materialNamesFromApi, item.name] 
+          })
+        );
+
+        this.setState({
+          selectedMaterial: this.state.materialNamesFromApi[0]
+        });
+      } 
+      else{
+        this.toggleLoadStatus();
+      } 
+    } 
+    catch {}
   };
 
   // Check existence of party name
@@ -99,29 +112,28 @@ export default class PurchaseEntry extends React.Component {
       .catch(error => {
         alert(error.response.request._response);
       });
-
     e.target.reset();
     e.preventDefault();
   };
 
   // toggle load status
   toggleLoadStatus = async () => {
-    if (this.state.loadingStatus.visibility === "visible") {
+    if (this.state.loadingStatus.display === "block") {
       await this.setState({
         loadingStatus: {
-          visibility: "hidden"
+          display: "none"
         },
         loadedStatus: {
-          visibility: "visible"
+          display: "block"
         }
       });
     } else {
       await this.setState({
         loadingStatus: {
-          visibility: "visible"
+          display: "block"
         },
         loadedStatus: {
-          visibility: "hidden"
+          display: "none"
         }
       });
     }
@@ -144,10 +156,10 @@ export default class PurchaseEntry extends React.Component {
         visibility: "visible"
       },
       loadingStatus: {
-        visibility: "visible"
+        display: "block"
       },
       loadedStatus: {
-        visibility: "hidden"
+        display: "none"
       }
     };
     this.fetchProduct = this.fetchProduct.bind(this);
@@ -168,71 +180,74 @@ export default class PurchaseEntry extends React.Component {
         className="form-container form-group"
         onSubmit={e => this.onSubmit(e)}
       >
-        <p className="headingViewPart">Purchase Entry</p>
-        <div className="pt-5">
-          <Autocomplete
-            suggestions={this.state.partyNamesFromApi}
-            callbackFromParent={dataFromChild => {
-              this.state.selectedParty = dataFromChild;
-            }}
-            checkFromParent={this.checkParty}
-            placeholderfrom={"Party name"}
-          />
+        <h3 style={this.state.loadingStatus}>There is no any purchase party or material</h3>
+        <div style={this.state.loadedStatus}>
+          <p className="headingViewPart">Purchase Entry</p>
+          <div className="pt-5">
+            <Autocomplete
+              suggestions={this.state.partyNamesFromApi}
+              callbackFromParent={dataFromChild => {
+                this.state.selectedParty = dataFromChild;
+              }}
+              checkFromParent={this.checkParty}
+              placeholderfrom={"Party name"}
+            />
 
-          <p>{this.state.partyExistMessage}</p>
-          <br />
+            <p>{this.state.partyExistMessage}</p>
+            <br />
 
-          <select onChange={e => this.state.selectedMaterial=e.target.value}>
-                {this.state.materialNamesFromApi.map((item) => (
-                    <option value={item}>{item}</option>
-                ))}
-          </select> 
+            <select onChange={e => this.state.selectedMaterial=e.target.value}>
+                  {this.state.materialNamesFromApi.map((item) => (
+                      <option value={item}>{item}</option>
+                  ))}
+            </select> 
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <InputDateField
-            callbackFromParent={dataFromChild => {
-              this.state.date = dataFromChild;
-            }}
-          />
-          <br />
-          <br />
+            <InputDateField
+              callbackFromParent={dataFromChild => {
+                this.state.date = dataFromChild;
+              }}
+            />
+            <br />
+            <br />
 
-          <InputRemarkField
-            callbackFromParent={dataFromChild => {
-              this.state.remark = dataFromChild;
-            }}
-          />
+            <InputRemarkField
+              callbackFromParent={dataFromChild => {
+                this.state.remark = dataFromChild;
+              }}
+            />
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <InputQuantityField
-            placeholder={"Quantity"}
-            callbackFromParent={dataFromChild => {
-              this.state.quantity = dataFromChild;
-            }}
-          />
+            <InputQuantityField
+              placeholder={"Quantity"}
+              callbackFromParent={dataFromChild => {
+                this.state.quantity = dataFromChild;
+              }}
+            />
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <InputRateField
-            placeholderParent={"Rate"}
-            callbackFromParent={dataFromChild => {
-              this.state.rate = dataFromChild;
-            }}
-          />
-        </div>
-        <p>{this.state.responseMessage}</p>
-        <button
-          type="submit"
-          className="btn btn-outline-dark"
-          style={this.state.buttonStatus}
-        >
-          Save
-        </button>
+            <InputRateField
+              placeholderParent={"Rate"}
+              callbackFromParent={dataFromChild => {
+                this.state.rate = dataFromChild;
+              }}
+            />
+          </div>
+          <p>{this.state.responseMessage}</p>
+          <button
+            type="submit"
+            className="btn btn-outline-dark"
+            style={this.state.buttonStatus}
+          >
+            Save
+          </button>
+        </div>  
       </form>
     );
   }

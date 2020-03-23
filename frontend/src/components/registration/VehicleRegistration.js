@@ -103,6 +103,8 @@ export default class VehicleRegistration extends React.Component {
     this.checkVehicle = this.checkVehicle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.toggleLoadStatus = this.toggleLoadStatus.bind(this);
+
+    //Fetch data from server
     this.fetchProduct();
   }
 

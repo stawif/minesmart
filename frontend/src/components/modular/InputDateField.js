@@ -13,17 +13,18 @@ export default class InputDateField extends React.Component {
     };
 
     //this.props.callbackFromParent(this.state.date);
-    this.storePassword = this.storePassword.bind(this);
+    this.storeDate = this.storeDate.bind(this);
   }
 
-  storePassword = e => {
+  storeDate = e => {
     this.props.callbackFromParent(this.state.date);
   };
 
   componentDidMount() {
-    this.storePassword();
+    this.storeDate();
   }
   onChange = e => {
+   this.state.date= e.target.value
     this.props.callbackFromParent(e.target.value);
   };
   render() {
@@ -34,7 +35,6 @@ export default class InputDateField extends React.Component {
           data-date-format="YYYY-MM-DD"
           defaultValue={this.state.date}
           name="date"
-          //value={this.state.date}
           onChange={this.onChange}
           required
         />
