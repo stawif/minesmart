@@ -65,7 +65,6 @@ class WorkerSerializer(serializers.ModelSerializer):
     """
     Serializer for worker model
     """
-    entry_date = serializers.CharField(source='debit_id.date')
     class Meta:
         model = Worker
         fields = ['name','contact','village','salary']

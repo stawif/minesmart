@@ -98,7 +98,7 @@ class WorkerList(APIView):
     View to return List of party
     """
     def get(self,request):
-        queryset = Worker.objects.all().order_by('exit_date')
+        queryset = Worker.objects.all()
         serializer = WorkerSerializer(queryset,many=True)
         return Response(serializer.data)
 
@@ -526,14 +526,13 @@ class AddWorker(APIView):
         try:
             api_name = request.data['name']
             api_contact = request.data['contact']
-            api_date = request.data['date']
             api_village = request.data['village']
             api_salary = request.data['salary']
         except Exception as e:
             return Response('please provide all information correctly',status=status.HTTP_204_NO_CONTENT)
         if request.data:
             try:
-                mix_debit_create_i = MixDebit.objects.create(owner=owner,date=api_date,category="worker_debit")
+                mix_debit_create_i = MixDebit.objects.create(owner=owner,category="worker_debit")
             except Exception:
                 return Response("please provide correct data",status=status.HTTP_400_BAD_REQUEST)
             try:
