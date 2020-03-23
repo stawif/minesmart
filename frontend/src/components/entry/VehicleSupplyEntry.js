@@ -145,7 +145,7 @@ export default class VehicleSupplyEntry extends React.Component {
           <div className="pt-5">
           <select onChange={e => this.state.selectedMaterial=e.target.value}>
                   {this.state.materialNamesFromApi.map((item) => (
-                      <option value={item}>{item}</option>
+                      <option value={item} key={item}>{item}</option>
                   ))}
             </select> 
 

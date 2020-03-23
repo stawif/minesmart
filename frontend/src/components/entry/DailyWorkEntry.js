@@ -154,7 +154,7 @@ export default class DailyWorkEntry extends React.Component {
 
                 <select onChange={e => this.state.selectedVehicle=e.target.value}>
                   {this.state.vehicleNamesFromApi.map((item) => (
-                      <option value={item}>{item}</option>
+                      <option value={item} key={item}>{item}</option>
                   ))}
                 </select> 
 

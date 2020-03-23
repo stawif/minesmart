@@ -28,7 +28,15 @@ export default class VehicleRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.vehicleName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.vehicleName.length < 5){
+          this.setState({
+            vehicleExistStatus: "* Please Enter Minimum length of 5",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.vehicleName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             vehicleExistStatus: "* This vehicle name is already exist!!!",
             buttonStatus: {

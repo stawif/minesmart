@@ -8,6 +8,10 @@ export default class InputPartyNameField extends Component {
     this.props.callbackFromParent(e.target.value);
   };
 
+  onBlur = e => {
+    this.props.callbackFromParent(e.target.value.trim());
+  };
+
   render() {
     return (
       <Fragment>
@@ -19,6 +23,7 @@ export default class InputPartyNameField extends Component {
           maxLength="30"
           minLength="5"
           onChange={this.onChange}
+          onBlur= {this.onBlur}
           required
         />
       </Fragment>

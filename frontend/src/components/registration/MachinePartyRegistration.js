@@ -29,7 +29,15 @@ export default class MachinePartyRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.partyName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.partyName.length < 5){
+          this.setState({
+            partyExistMessage: "* Please Enter Minimum length of 5",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.partyName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             partyExistMessage: "* This party name is already exist!!!",
             buttonStatus: {

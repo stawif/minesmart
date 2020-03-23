@@ -2,14 +2,12 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
 export default class InputCommonName extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-
   onChange = e => {
     this.props.callbackFromParent(e.target.value);
+  };
+
+  onBlur = e => {
+    this.props.callbackFromParent(e.target.value.trim());
   };
 
   render() {
@@ -23,6 +21,7 @@ export default class InputCommonName extends Component {
           minLength={this.props.minLengthh}
           maxLength="30"
           onChange={this.onChange}
+          onBlur={this.onBlur}
           required
         />
       </Fragment>

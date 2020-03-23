@@ -194,7 +194,7 @@ export default class MachineSupplyEntry extends React.Component {
 
             <select onChange={e => this.state.selectedMaterial=e.target.value}>
                   {this.state.materialNamesFromApi.map((item) => (
-                      <option value={item}>{item}</option>
+                      <option value={item} key= {item}>{item}</option>
                   ))}
             </select> 
 

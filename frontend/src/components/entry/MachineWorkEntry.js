@@ -206,7 +206,7 @@ export default class MachineWorkEntry extends React.Component {
                 
                 <select onChange={e => this.state.selectedMachine=e.target.value}>
                   {this.state.machineNamesFromApi.map((item) => (
-                      <option value={item}>{item}</option>
+                      <option value={item} key={item}>{item}</option>
                   ))}
                 </select> 
 

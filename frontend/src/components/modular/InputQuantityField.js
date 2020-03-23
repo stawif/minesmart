@@ -14,6 +14,7 @@ export default class InputPartyVillageField extends Component {
         <input
             type="text"
             className="mb-2"
+            pattern="[0-9]*"
             placeholder={this.props.placeholder}
             autoComplete="off"
             onChange={this.onChange}

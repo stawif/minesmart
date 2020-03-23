@@ -28,15 +28,22 @@ export default class MachineRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.machineName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.machineName.length < 5){
+          this.setState({
+            machineExistStatus: "* Please Enter Minimum length of 5",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.machineName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             machineExistStatus: "* This machine name is already exist!!!",
             buttonStatus: {
               visibility: "hidden"
             }
           });
-        } else {
-        }
+        } 
       };
       this.state.machineList.forEach(showList);
     } catch (err) {}

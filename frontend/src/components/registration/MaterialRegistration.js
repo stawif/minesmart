@@ -30,7 +30,16 @@ export default class MaterialRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.materialName.toLowerCase() === item.name.toLowerCase()) {
+
+        if( this.state.materialName.length < 2){
+          this.setState({
+            materialExistMessage: "* Please Enter Minimum length of 2",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.materialName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             materialExistMessage: "* This material name is already exist!!!",
             buttonStatus: {

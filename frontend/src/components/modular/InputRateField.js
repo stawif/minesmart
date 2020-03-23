@@ -12,6 +12,7 @@ export default class InputRateField extends Component {
         <input
           type="number"
           step="0.1"
+          precision={2}
           className="mb-2"
           placeholder={this.props.placeholderParent}
           autoComplete="off"
