@@ -4,7 +4,7 @@ from .serializers import (MachineSerializer , VehicleSerializer , RecorderSerial
                             MachineWorkSerializer , VehicleWorkSerializer,WorkerSerializer,MachineSupplySerializer,
                             DailyWorkSerializer,MaterialListSerializer,PartSerializer,PurchaseSerializer)
 from rest_framework.views import APIView
-from .models import  (Machine , Owner , Vehicle , Recorder , Material , Credit,
+from .models import  (Machine , Owner , Vehicle , Recorder , Material , Credit, WorkerDate,
                         MachineParty,PurchaseParty,VehicleParty,MachineWork,VehicleWork,Part,DailyExpense,
                         MixDebit,Worker,Purchase,DailyWork,MachineSupply,VehicleSupply,MixCredit,Debit)
 from rest_framework.response import Response
@@ -877,6 +877,49 @@ class AddDailyExpense(APIView):
             debit_id.delete()
             return Response('daily expense not added',status=status.HTTP_200_OK)
 
+class AddWorkerStartDate(APIView):
+    """
+    View to add worker start date.
+    api_ is for indication that this data in came from api
+    _i is for indication that this data is a model instance
+    """
+    def post(self,request):
+        try:
+            api_name = request.data['name']
+            api_start_date = request.data['start_date']
+        except Exception as e:
+            return Response('please provide all information',status=status.HTTP_204_NO_CONTENT)
+        try:
+            worker_i = Worker.objects.get(name=api_name)
+        except Exception as e:
+            return Response('worker does not exists',status=status.HTTP_200_OK)
+        try:
+            worker_date_i = WorkerDate.objects.create(worker_id=worker_i,start_date=api_start_date)
+            return Response('start date for worker {} is saved'.format(api_name),status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(e,status=status.HTTP_200_OK)
+        return Response('network error,please try again later',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class AddWorkerEndDate(APIView):
+    """
+    View to add worker End date.
+    api_ is for indication that this data in came from api
+    _i is for indication that this data is a model instance
+    """
+    def post(self,request):
+        try:
+            api_worker_date_id = request.data['worker_date_id']
+            api_end_date = request.data['end_date']
+        except Exception as e:
+            return Response('please provide all information',status=status.HTTP_200_OK)
+        try:
+            worker_date_i = WorkerDate.objects.get(pk=api_worker_date_id)
+            worker_date_i.end_date=api_end_date
+            worker_date_i.save()
+            return Response('end date for worker {} is saved'.format(worker_date_i.worker_id),status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(e,status=status.HTTP_200_OK)
+        return Response('network error,please try again later',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # APIView for Payment  (post request)
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1054,7 +1097,7 @@ class UpdateAvgFeet(APIView):
         return Response('no work for this machine party exists',status=status.HTTP_200_OK)
 
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# APIView for Party Details(Work , Credit , Debit) (post request)
+# APIView for Details(Work , Credit , Debit,Party,Worker) (post request)
 # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 class MachineWorkDetail(APIView):
@@ -1224,3 +1267,30 @@ class PurchasePartyDebit(APIView):
         party_credit_detail = {'party':api_party,'contact':party_i.contact,'village':party_i.village,
                                 'debits':list(dedit_i)}
         return Response(party_credit_detail,status=status.HTTP_200_OK)
+
+class WorkerDateDetail(APIView):
+    """
+    View to Get Worker Dates Detail.
+    api_ is for indication that this data in came from api
+    _i is for indication that this data is a model instance
+    """
+    def post(self,request):
+        try:
+            api_name = request.data['name']
+        except Exception as e:
+            return Response('worker does not exists',status=status.HTTP_200_OK)
+        try:
+            worker_i = Worker.objects.get(name=api_name)
+        except Exception as e:
+            return Response('Worker Does not exists',status=status.HTTP_200_OK)
+        try:
+            worker_date_i = WorkerDate.objects.filter(worker_id=worker_i).values('start_date','end_date','pk').order_by('start_date')
+            for i in worker_date_i:
+                i['worker_date_id']=i['pk']
+                del i['pk']
+            worker_date_details = {"name":worker_i.name,"contact":worker_i.contact,"village":worker_i.village,
+                                     "worker dates":list(worker_date_i)}
+            return Response(worker_date_details,status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response('worker date not available',status=status.HTTP_400_BAD_REQUEST)
+        return Response('network error,please try again later',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
