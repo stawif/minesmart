@@ -356,6 +356,9 @@ category=(
 )
 
 class DailyExpense(models.Model):
+    """
+    Model for Daily Expense.
+    """
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     debit_id = models.OneToOneField(MixDebit,on_delete=models.CASCADE)
     category = models.CharField(max_length=50,choices=category)
@@ -363,3 +366,13 @@ class DailyExpense(models.Model):
     def __str__(self):
         return str(self.debit_id)
 
+class WorkerDate(models.Model):
+    """
+    Model for Worker Date.
+    """
+    worker_id = models.ForeignKey(Worker,on_delete=models.CASCADE)
+    start_date = models.DateField(null=False)
+    end_date = models.DateField(blank=True,null=True)
+
+    def __str__(self):
+        return str(self.id)

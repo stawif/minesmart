@@ -76,6 +76,7 @@ class Migration(migrations.Migration):
                 ('contact', models.IntegerField()),
                 ('village', models.CharField(max_length=30)),
                 ('salary', models.IntegerField()),
+                ('exit_date', models.DateField(blank=True, null=True)),
                 ('debit_id', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='database.MixDebit')),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='database.Owner')),
             ],
