@@ -282,6 +282,54 @@ class DebitList(APIView):
         except Exception as e:
             return Response("network error",status=status.HTTP_404_NOT_FOUND)
 
+class AccountDetail(APIView):
+    """
+    View to Account Detail.
+    api_ is for indication that this data in came from api
+    _i is for indication that this data is a model instance
+    """
+    def get(self,request):
+        try:
+            debit_i = Debit.objects.all().order_by('date').values('date','remark','debit_amount','debit_id')
+            for i in debit_i:
+                mixdebit_i = MixDebit.objects.get(id=i['debit_id'])
+                i['category']=mixdebit_i.category
+                del i['debit_id']
+            credit_i = Credit.objects.all().order_by('date').values('date','remark','credit_amount','work')
+            for i in credit_i:
+                mixcredit_i = MixCredit.objects.get(id=i['work'])
+                i['category']=mixcredit_i.category
+                del i['work']
+            account_info = list(debit_i)
+            for i in credit_i:
+                account_info.append(i)
+            return Response(sorted(account_info,key=lambda i:i['date']),status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response('network error,please try again later',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class OwnerAccountDetail(APIView):
+    """
+    View to Account Detail.
+    api_ is for indication that this data in came from api
+    _i is for indication that this data is a model instance
+    """
+    def get(self,request):
+        try:
+            owner_i = Owner.objects.get(id=1)
+            debit_i = Debit.objects.all().values('debit_amount')
+            credit_i = Credit.objects.all().values('credit_amount')
+            total_debit = 0
+            total_credit = 0
+            for i in debit_i:
+                total_debit += int(i['debit_amount'])
+            for i in credit_i:
+                total_credit += int(i['credit_amount'])
+            owner_account_detail = {"name":owner_i.name,"contact":owner_i.contact,
+                                    "Total Credit":total_credit,"Total Debit":total_debit}
+            return Response(owner_account_detail,status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response('network error',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class MachineSupplyList(APIView):
     """
     View to Machine Supply Detail.
