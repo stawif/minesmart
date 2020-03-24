@@ -277,7 +277,7 @@ class VehicleSupply(models.Model):
     """    
     Material = models.ForeignKey(Material, on_delete=models.CASCADE)
     date = models.DateField()
-    quantity = models.IntegerField(blank=False)
+    quantity = models.FloatField(blank=False)
 
     def __str__(self):
         return str(self.pk)    

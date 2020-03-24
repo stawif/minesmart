@@ -60,12 +60,13 @@ export default class VehicleSupplyEntry extends React.Component {
   onSubmit = e => {
     axios
       .post("http://127.0.0.1:8000/enter-vehicle-supply/", {
-        material: this.state.selectedItem,
+        material: this.state.selectedMaterial,
         date: this.state.date,
         quantity: this.state.quantity
       })
       .then(res => {
         this.fetchProduct();
+        console.log("Response message: ",res.data);
         this.setState({
           responseMessage: res.data
         });
@@ -73,7 +74,9 @@ export default class VehicleSupplyEntry extends React.Component {
       .catch(error => {
         alert(error.response.request._response);
       });
-  
+    console.log("Material :",this.state.selectedMaterial);
+    console.log("Date :",this.state.date);
+    console.log("Quantity :",this.state.quantity);  
     e.target.reset();
     e.preventDefault();
   };
@@ -106,9 +109,8 @@ export default class VehicleSupplyEntry extends React.Component {
 
     this.state = {
       materialNamesFromApi: [],
-
       date: null,
-      selectedItem: "",
+      selectedMaterial: "",
       quantity: 0,
       responseMessage: "",
       buttonStatus: {

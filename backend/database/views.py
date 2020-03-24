@@ -771,20 +771,23 @@ class AddVehicleSupply(APIView):
                 api_date = request.data['date']
                 api_quantity = request.data['quantity']
             except Exception as e:
+                print(e)
                 return Response("please provide all information correctly",status=status.HTTP_204_NO_CONTENT)   
             # get Material instance from database
             try:
                 Material_i = Material.objects.get(name=api_Material)
             except Exception as e:
+                print(e)
                 return Response("please provide a valid Material name",status=status.HTTP_204_NO_CONTENT)        
             try:
                 vehicle_supply_create = VehicleSupply.objects.create(Material=Material_i,date=api_date,quantity=api_quantity)
 
-                Material_new_quantity = Material_i.quantity - api_quantity
+                Material_new_quantity = Material_i.quantity - float(api_quantity)
                 Material.objects.filter(pk=Material_i.pk).update(quantity=Material_new_quantity)          
 
                 return Response("{} is supplied to {}".format(api_Material,api_date),status=status.HTTP_201_CREATED)
             except Exception as e:
+                print(e)
                 return Response("there is error while saving data in database",status=status.HTTP_204_NO_CONTENT)                
 
 class AddPart(APIView):
