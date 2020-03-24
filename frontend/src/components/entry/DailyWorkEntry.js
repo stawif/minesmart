@@ -246,6 +246,7 @@ export default class DailyWorkEntry extends React.Component {
                 />
               </div>
               <p>{this.state.responseMessage}</p>
+              <p>{this.state.totalAmount}</p>
               <button
                 type="submit"
                 className="btn btn-outline-dark"

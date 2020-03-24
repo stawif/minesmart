@@ -177,17 +177,17 @@ export default class MachineWorkEntry extends React.Component {
                 <InputRateField
                   placeholderParent={"Diesel in liter"}
                   callbackFromParent={dataFromChild => {
-                    this.state.dieselAmount = parseInt(dataFromChild);
+                    this.state.dieselAmount = dataFromChild;
                   }}
                 />
 
                 <br />
                 <br />
 
-                <InputQuantityField
-                  placeholder={"Drilling Feet"}
+                <InputRateField
+                  placeholderParent={"Drilling Feet"}
                   callbackFromParent={dataFromChild => {
-                    this.state.drillingFeet = parseInt(dataFromChild);
+                    this.state.drillingFeet = dataFromChild;
                   }}
                 />
                 <br />
