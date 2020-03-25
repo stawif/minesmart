@@ -7,7 +7,7 @@ from .views import (AddMachine , MachineList , VehicleList , AddVehicle , AddRec
                     PartyThroughContact,AddOwnerDebit,OwnerDebitList,AddDailyExpense,DailyExpenseList,WorkerPayment,
                     PurchaseDetail,MachinePartyCredit,VehiclePartyCredit,DailyWorkCredit,DailyExpenseDedit,
                     PartDedit,WorkerDebit,PurchasePartyDebit,DailyWorkList,CreditList,DebitList,MachineSupplyList,
-                    VehicleSupplyList)
+                    VehicleSupplyList,AddWorkerStartDate,WorkerDateDetail,AddWorkerEndDate,AccountDetail,OwnerAccountDetail)
 
 urlpatterns = [
     # """
@@ -34,6 +34,8 @@ urlpatterns = [
     path('list-of-debit/',DebitList.as_view()),
     path('list-of-machinesupply/',MachineSupplyList.as_view()),
     path('list-of-vehiclesupply/',VehicleSupplyList.as_view()),
+    path('account-detail/',AccountDetail.as_view()),
+    path('owner-account-detail/',OwnerAccountDetail.as_view()),
     # """
     # Registration URL
     # """
@@ -57,6 +59,8 @@ urlpatterns = [
     path('enter-part/',AddPart.as_view()),
     path('enter-owner-debit/',AddOwnerDebit.as_view()),
     path('enter-daily-expense/',AddDailyExpense.as_view()),
+    path('enter-worker-start-date/',AddWorkerStartDate.as_view()),
+    path('enter-worker-end-date/',AddWorkerEndDate.as_view()),
     # """
     # Payment url
     # """
@@ -75,4 +79,5 @@ urlpatterns = [
     path('vehicle-party-credit/',VehiclePartyCredit.as_view()),
     path('worker-debit/',WorkerDebit.as_view()),
     path('purchase-party-debit/',PurchasePartyDebit.as_view()),
+    path('worker-date-detail/',WorkerDateDetail.as_view()),
 ]

@@ -38,6 +38,7 @@ import WorkerDebit from './components/account/WorkerDebit';
 import DailyWorkCredit from './components/account/DailyWorkCredit';
 import Credit from './components/account/Credit';
 import Debit from './components/account/Debit';
+import AllTransactions from './components/account/AllTransactions';
 
 //Tables Components
 import MachineWorkTable from "./components/tableDisplay/MachineWorkTable";
@@ -92,7 +93,8 @@ class App extends React.Component {
         credit: "credit",
         debit: "debit",
         machineSupplyDisplay: "machineSupplyDisplay",
-        vehicleSupplyDisplay: "vehicleSupplyDisplay"
+        vehicleSupplyDisplay: "vehicleSupplyDisplay",
+        allTransactions: "allTransactions"
       },
       partyName: "",
       currentPage: "machineRegistration"
@@ -219,6 +221,9 @@ class App extends React.Component {
     }
     else if(this.state.currentPage === this.state.allPages.vehicleSupplyDisplay){
       currentComponent = <VehicleSupplyDisplay />;
+    }
+    else if(this.state.currentPage === this.state.allPages.allTransactions){
+      currentComponent = <AllTransactions />;
     }
     else {
       currentComponent = <MachineRegistration />;
@@ -632,6 +637,9 @@ class App extends React.Component {
                       </a>
                       <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.dailyWorkCredit)}>
                           Daily Work Credit
+                      </a>
+                      <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.allTransactions)}>
+                          All Transactions
                       </a>
                       </div>    
                     </li>  

@@ -72,7 +72,7 @@ class Credit extends React.Component{
         this.state.creditDetail.forEach(this.setDateFilter);
         return(
             <div id="mainDiv">
-                <div class="dateFilter">
+                <div className="dateFilter">
                     <div className="fromDate">
                         <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
                             this.setState({
