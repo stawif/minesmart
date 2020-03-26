@@ -1340,7 +1340,7 @@ class WorkerDateDetail(APIView):
                 i['worker_date_id']=i['pk']
                 del i['pk']
             worker_date_details = {"name":worker_i.name,"contact":worker_i.contact,"village":worker_i.village,
-                                     "worker dates":list(worker_date_i)}
+                                     "date":list(worker_date_i)}
             return Response(worker_date_details,status=status.HTTP_200_OK)
         except Exception as e:
             return Response('worker date not available',status=status.HTTP_400_BAD_REQUEST)
