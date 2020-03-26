@@ -28,6 +28,9 @@ import MachineSupplyDisplay from './components/displaydata/MachineSupplyDisplay'
 import VehiclesupplyDisplay from './components/displaydata/VehicleSupplyDisplay';
 import WorkerDateEntry from './components/entry/WorkerDateEntry';
 
+//Display section
+import WorkerDateDisplay from './components/displaydata/WorkerDateDisplay';
+
 //Accounts
 import MachineCredit from "./components/account/MachineCredit";
 import VehicleCredit from './components/account/VehicleCredit';
@@ -94,7 +97,8 @@ class App extends React.Component {
         debit: "debit",
         machineSupplyDisplay: "machineSupplyDisplay",
         vehicleSupplyDisplay: "vehicleSupplyDisplay",
-        workerDateEntry: "workerDateEntry" 
+        workerDateEntry: "workerDateEntry",
+        workerDateDisplay: "workerDateDisplay" 
       },
       partyName: "",
       currentPage: "machineRegistration"
@@ -224,6 +228,9 @@ class App extends React.Component {
     }
     else if(this.state.currentPage === this.state.allPages.workerDateEntry){
       currentComponent = <WorkerDateEntry />;
+    }
+    else if(this.state.currentPage === this.state.allPages.workerDateDisplay){
+      currentComponent = <WorkerDateDisplay />;
     }
     else {
       currentComponent = <MachineRegistration />;
@@ -592,6 +599,9 @@ class App extends React.Component {
                         </a>
                         <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.vehicleSupplyDisplay)}>
                           Vehicle Supply Display
+                        </a>
+                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.workerDateDisplay)}>
+                          Worker Dates
                         </a>
                       </div>
                     </li>
