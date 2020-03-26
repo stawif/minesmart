@@ -15,10 +15,16 @@
 	height: 80%;
 }
 .dateFilter{
-	height: 10%;
+	height: 5%;
 	width: 100%;
 	display: flex;
 	flex-wrap: nowrap;
+}
+.containTable{
+	height: 87%;
+}
+.lowerStrip{
+	height: 8%;
 }
 .fromDate{
 	height: 100%;

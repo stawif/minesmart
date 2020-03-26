@@ -10,10 +10,12 @@ class Credit extends React.Component{
         if(jsonCreditDetail.length!=0)
         {
             this.setState({
-                minDate: jsonCreditDetail[0].date
+                minDate: jsonCreditDetail[0].date,
+                minFilterDate: jsonCreditDetail[0].date
             });
             this.setState({
-                maxDate: jsonCreditDetail.slice(-1)[0].date    
+                maxDate: jsonCreditDetail.slice(-1)[0].date,
+                maxFilterDate: jsonCreditDetail.slice(-1)[0].date    
             });
         } 
         this.setState({
@@ -31,6 +33,7 @@ class Credit extends React.Component{
         }
         if(this.state.minFilterDate <= item.date && item.date <= this.state.maxFilterDate){
             this.state.currentCredit.push(item);
+            this.state.totalCredit= this.state.totalCredit+ item.credit_amount;
         }
     }
 
@@ -54,7 +57,8 @@ class Credit extends React.Component{
             maxDate: null,
             minFilterDate: null,
             maxFilterDate: null,
-            currentCredit: []
+            currentCredit: [],
+            totalCredit: 0
         }
 
         this.fetchProduct= this.fetchProduct.bind(this);
@@ -67,6 +71,7 @@ class Credit extends React.Component{
     render(){
         //Clear currentCredit list
         this.state.currentCredit= [];
+        this.state.totalCredit= 0;
         
         //Apply date filter
         this.state.creditDetail.forEach(this.setDateFilter);
@@ -74,40 +79,55 @@ class Credit extends React.Component{
             <div id="mainDiv">
                 <div class="dateFilter">
                     <div className="fromDate">
-                        <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                        <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.minFilterDate} onChange={e => {
                             this.setState({
                                 minFilterDate: e.target.value
                             });
                         }}/>
                     </div>
                     <div className="toDate">
-                        <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                        <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.maxFilterDate} onChange={e => {
                             this.setState({
                                 maxFilterDate: e.target.value
                             });
                         }}/>
                     </div>
                 </div>
-                <table className="table table-borderd">
-                    <thead className="thead-dark">
-                        <tr>
-                            <th>Category</th>
-                            <th>Date</th>
-                            <th>Credit Amount</th>
-                            <th>Remark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.currentCredit.map((credit) => (
-                            <tr className={this.returnRowColor(credit.category)}>
-                                <td>{credit.category}</td>
-                                <td>{credit.date}</td>
-                                <td>{credit.credit_amount}</td>
-                                <td>{credit.remark}</td>
+                <div className="containTable">
+                    <table className="table table-borderd">
+                        <thead className="thead-dark">
+                            <tr>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Credit Amount</th>
+                                <th>Remark</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {this.state.currentCredit.map((credit) => (
+                                <tr className={this.returnRowColor(credit.category)}>
+                                    <td>{credit.category}</td>
+                                    <td>{credit.date}</td>
+                                    <td>{credit.credit_amount}</td>
+                                    <td>{credit.remark}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="lowerStrip row">
+                    <div className="col-sm-6 d-flex justify-content-center align-items-center p-0 m-0"><p>Total Credit: {this.state.totalCredit}</p></div>
+                    <div className="col-sm-6 d-flex justify-content-center align-items-center p-0 m-0">
+                        <button onClick={e => {
+                            this.setState({
+                                minFilterDate: this.state.minDate,
+                                maxFilterDate: this.state.maxDate
+                            });
+                        }}>
+                            Reset date
+                        </button>
+                    </div>
+                </div>
             </div>    
         );
     }
