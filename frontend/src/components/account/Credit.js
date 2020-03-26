@@ -93,7 +93,7 @@ class Credit extends React.Component{
                         }}/>
                     </div>
                 </div>
-                <div className="containTable">
+                <div className="containTable scrollingSection">
                     <table className="table table-borderd">
                         <thead className="thead-dark">
                             <tr>

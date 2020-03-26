@@ -7,7 +7,9 @@
     height: 100%;
     width: 100%;
 }
-
+.scrollingSection{
+	overflow-y: scroll;
+}
 .upperHeader{
     height: 10%;
 }
