@@ -14,7 +14,7 @@ export default class InputPartyVillageField extends Component {
           placeholder="Village"
           autoComplete="off"
           maxLength="30"
-          minLength="5"
+          minLength="3"
           onChange={this.onChange}
           required
         />

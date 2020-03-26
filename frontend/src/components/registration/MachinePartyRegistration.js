@@ -12,7 +12,8 @@ export default class MachinePartyRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-machineparty/"
       );
       const jsonMachineList = await responseMachineList.json();
-      this.state.partyList = jsonMachineList;
+      this.setState({partyList: jsonMachineList})
+      //this.state.partyList = jsonMachineList;
     } catch {
       this.toggleLoadStatus();
     }
@@ -28,7 +29,15 @@ export default class MachinePartyRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.partyName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.partyName.length < 5){
+          this.setState({
+            partyExistMessage: "* Please Enter Minimum length of 5",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.partyName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             partyExistMessage: "* This party name is already exist!!!",
             buttonStatus: {

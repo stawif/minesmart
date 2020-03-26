@@ -159,7 +159,7 @@ export default class MachineWorkEntry extends React.Component {
                 
                 <select onChange={e => this.state.selectedMachine=e.target.value}>
                   {this.state.machineNamesFromApi.map((item) => (
-                      <option value={item}>{item}</option>
+                      <option value={item} key={item}>{item}</option>
                   ))}
                 </select> 
 
@@ -177,17 +177,17 @@ export default class MachineWorkEntry extends React.Component {
                 <InputRateField
                   placeholderParent={"Diesel in liter"}
                   callbackFromParent={dataFromChild => {
-                    this.state.dieselAmount = parseInt(dataFromChild);
+                    this.state.dieselAmount = dataFromChild;
                   }}
                 />
 
                 <br />
                 <br />
 
-                <InputQuantityField
-                  placeholder={"Drilling Feet"}
+                <InputRateField
+                  placeholderParent={"Drilling Feet"}
                   callbackFromParent={dataFromChild => {
-                    this.state.drillingFeet = parseInt(dataFromChild);
+                    this.state.drillingFeet = dataFromChild;
                   }}
                 />
                 <br />

@@ -13,7 +13,8 @@ export default class PurchasePartyRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-purchaseparty/"
       );
       const jsonPartyList = await responsePartyList.json();
-      this.state.partyList = jsonPartyList;
+      this.setState({ partyList: jsonPartyList });
+      //this.state.partyList = jsonPartyList;
     } catch {
       this.toggleLoadStatus();
     }
@@ -30,7 +31,15 @@ export default class PurchasePartyRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.partyName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.partyName.length < 5){
+          this.setState({
+            partyExistMessage: "* Please Enter Minimum length of 5",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.partyName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             partyExistMessage: "* This party name is already exist!!!",
             buttonStatus: {

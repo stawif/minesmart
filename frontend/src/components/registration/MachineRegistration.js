@@ -10,7 +10,8 @@ export default class MachineRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-machines/"
       );
       const jsonMachineList = await responseMachineList.json();
-      this.state.machineList = jsonMachineList;
+      this.setState({machineList: jsonMachineList})
+      
     } catch {
       this.toggleLoadStatus();
     }
@@ -27,15 +28,22 @@ export default class MachineRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.machineName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.machineName.length < 5){
+          this.setState({
+            machineExistStatus: "* Please Enter Minimum length of 5",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.machineName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             machineExistStatus: "* This machine name is already exist!!!",
             buttonStatus: {
               visibility: "hidden"
             }
           });
-        } else {
-        }
+        } 
       };
       this.state.machineList.forEach(showList);
     } catch (err) {}

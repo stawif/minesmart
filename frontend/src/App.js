@@ -26,10 +26,6 @@ import DailyExpenseEntry from './components/entry/DailyExpenseEntry';
 import WorkerDebitEntry from './components/entry/WorkerDebit';
 import MachineSupplyDisplay from './components/displaydata/MachineSupplyDisplay';
 import VehiclesupplyDisplay from './components/displaydata/VehicleSupplyDisplay';
-import WorkerDateEntry from './components/entry/WorkerDateEntry';
-
-//Display section
-import WorkerDateDisplay from './components/displaydata/WorkerDateDisplay';
 
 //Accounts
 import MachineCredit from "./components/account/MachineCredit";
@@ -42,6 +38,7 @@ import WorkerDebit from './components/account/WorkerDebit';
 import DailyWorkCredit from './components/account/DailyWorkCredit';
 import Credit from './components/account/Credit';
 import Debit from './components/account/Debit';
+import AllTransactions from './components/account/AllTransactions';
 
 //Tables Components
 import MachineWorkTable from "./components/tableDisplay/MachineWorkTable";
@@ -97,8 +94,7 @@ class App extends React.Component {
         debit: "debit",
         machineSupplyDisplay: "machineSupplyDisplay",
         vehicleSupplyDisplay: "vehicleSupplyDisplay",
-        workerDateEntry: "workerDateEntry",
-        workerDateDisplay: "workerDateDisplay" 
+        allTransactions: "allTransactions"
       },
       partyName: "",
       currentPage: "machineRegistration"
@@ -226,11 +222,8 @@ class App extends React.Component {
     else if(this.state.currentPage === this.state.allPages.vehicleSupplyDisplay){
       currentComponent = <VehicleSupplyDisplay />;
     }
-    else if(this.state.currentPage === this.state.allPages.workerDateEntry){
-      currentComponent = <WorkerDateEntry />;
-    }
-    else if(this.state.currentPage === this.state.allPages.workerDateDisplay){
-      currentComponent = <WorkerDateDisplay />;
+    else if(this.state.currentPage === this.state.allPages.allTransactions){
+      currentComponent = <AllTransactions />;
     }
     else {
       currentComponent = <MachineRegistration />;
@@ -489,9 +482,6 @@ class App extends React.Component {
                         <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() => this.updateCurrentPage(this.state.allPages.workerDebitEntry)}>
                           Worker Debit 
                         </a>
-                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() => this.updateCurrentPage(this.state.allPages.workerDateEntry)}>
-                          Worker Date 
-                        </a>
                       </div>
                     </li>
                     <li className="nav-item dropdown">
@@ -600,9 +590,6 @@ class App extends React.Component {
                         <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.vehicleSupplyDisplay)}>
                           Vehicle Supply Display
                         </a>
-                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.workerDateDisplay)}>
-                          Worker Dates
-                        </a>
                       </div>
                     </li>
                     <li className="nav-item dropdown">
@@ -650,6 +637,9 @@ class App extends React.Component {
                       </a>
                       <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.dailyWorkCredit)}>
                           Daily Work Credit
+                      </a>
+                      <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={() =>this.updateCurrentPage(this.state.allPages.allTransactions)}>
+                          All Transactions
                       </a>
                       </div>    
                     </li>  

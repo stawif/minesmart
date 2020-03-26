@@ -4,7 +4,7 @@ import InputContactField from "../modular/InputContactField";
 import InputDateField from "../modular/InputDateField";
 import InputCommonName from "../modular/InputCommonName";
 import InputPartyVillageField from "../modular/InputPartyVillageField";
-import InputRateField from "../modular/InputRateField";
+import InputQuantityField from "../modular/InputQuantityField";
 export default class WorkerRegistration extends React.Component {
   // Fetch vehicle list from server
   fetchProduct = async () => {
@@ -13,7 +13,8 @@ export default class WorkerRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-worker/"
       );
       const jsonWorkerList = await responseWorkerList.json();
-      this.state.workerList = jsonWorkerList;
+      this.setState({ workerList: jsonWorkerList });
+      //this.state.workerList = jsonWorkerList;
     } catch {
       this.toggleLoadStatus();
     }
@@ -30,7 +31,15 @@ export default class WorkerRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.workerName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.workerName.length < 3){
+          this.setState({
+            workerExistMessage: "* Please Enter Minimum length of 3",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.workerName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             workerExistMessage: "* This worker name is already exist!!!",
             buttonStatus: {
@@ -162,8 +171,8 @@ export default class WorkerRegistration extends React.Component {
           <br />
           <br />
 
-          <InputRateField
-            placeholderParent={"Worker Salary"}
+          <InputQuantityField
+            placeholder={"Worker Salary"}
             callbackFromParent={dataFromChild => {
               this.state.workerSalary = dataFromChild;
             }}

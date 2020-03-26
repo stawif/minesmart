@@ -13,19 +13,17 @@ export default class VehicleWorkEntry extends React.Component {
         "http://127.0.0.1:8000/list-of-vehicleparty/"
       );
       const jsonPartyList = await responsePartyList.json();
-      if(jsonPartyList.length > 0){
-        this.state.partyNamesFromApi= [];
+      if (jsonPartyList.length > 0) {
+        this.state.partyNamesFromApi = [];
         jsonPartyList.map(item =>
           this.setState({
             partyNamesFromApi: [...this.state.partyNamesFromApi, item.name]
-          }) 
+          })
         );
-      }
-      else{
+      } else {
         this.toggleLoadStatus();
       }
-    } 
-    catch {}
+    } catch {}
   };
 
   // Check existence of party name
@@ -57,7 +55,7 @@ export default class VehicleWorkEntry extends React.Component {
       .post("http://127.0.0.1:8000/enter-vehicleparty-work/", {
         party: this.state.selectedParty,
         date: this.state.date,
-        feet: (this.state.feet/12),
+        feet: this.state.feet / 12,
         five_feet: this.state.fiveFeet,
         two_half_feet: this.state.twoHalfFeet,
         remark: this.state.remark,
@@ -173,15 +171,6 @@ export default class VehicleWorkEntry extends React.Component {
                 <br />
                 <br />
 
-                <InputRemarkField
-                  callbackFromParent={dataFromChild => {
-                    this.state.remark = dataFromChild;
-                  }}
-                />
-
-                <br />
-                <br />
-
                 <InputRateField
                   callbackFromParent={dataFromChild => {
                     this.state.feet = dataFromChild;
@@ -215,6 +204,14 @@ export default class VehicleWorkEntry extends React.Component {
                     this.state.payment = dataFromChild;
                   }}
                 />
+                <br />
+                <br />
+
+                <InputRemarkField
+                  callbackFromParent={dataFromChild => {
+                    this.state.remark = dataFromChild;
+                  }}
+                />
               </div>
               <p>{this.state.responseMessage}</p>
               <button
@@ -227,7 +224,7 @@ export default class VehicleWorkEntry extends React.Component {
             </div>
           </form>
         </div>
-      </div>  
+      </div>
     );
   }
 }

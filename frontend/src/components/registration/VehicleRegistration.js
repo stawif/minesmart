@@ -10,7 +10,8 @@ export default class VehicleRegistration extends React.Component {
         "http://127.0.0.1:8000/list-of-vehicles/"
       );
       const jsonVehicleList = await responseVehicleList.json();
-      this.state.vehicleList = jsonVehicleList;
+      this.setState({ vehicleList: jsonVehicleList });
+      //this.state.vehicleList = jsonVehicleList;
     } catch {
       this.toggleLoadStatus();
     }
@@ -27,7 +28,15 @@ export default class VehicleRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.vehicleName.toLowerCase() === item.name.toLowerCase()) {
+        if( this.state.vehicleName.length < 5){
+          this.setState({
+            vehicleExistStatus: "* Please Enter Minimum length of 5",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.vehicleName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             vehicleExistStatus: "* This vehicle name is already exist!!!",
             buttonStatus: {
