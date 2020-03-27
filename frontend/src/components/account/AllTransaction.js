@@ -11,10 +11,12 @@ class AllTransactions extends React.Component {
 
     if (jsonTransactionDetail.length !== 0) {
       this.setState({
-        minDate: jsonTransactionDetail[0].date
+        minDate: jsonTransactionDetail[0].date,
+        minFilterDate: jsonTransactionDetail[0].date
       });
       this.setState({
-        maxDate: jsonTransactionDetail.slice(-1)[0].date
+        maxDate: jsonTransactionDetail.slice(-1)[0].date,
+        maxFilterDate:  jsonTransactionDetail.slice(-1)[0].date
       });
     }
     this.setState({
@@ -30,11 +32,15 @@ class AllTransactions extends React.Component {
     if (!this.state.maxFilterDate) {
       this.state.maxFilterDate = this.state.maxDate;
     }
-    if (
-      this.state.minFilterDate <= item.date &&
-      item.date <= this.state.maxFilterDate
-    ) {
-      this.state.currentTransaction.push(item);
+    if (this.state.minFilterDate <= item.date && item.date <= this.state.maxFilterDate) 
+    {
+        this.state.currentTransaction.push(item);
+        if(item.credit_amount){
+          this.state.totalCredit= this.state.totalCredit+ item.credit_amount;
+        }
+        else if(item.debit_amount){
+          this.state.totalDebit= this.state.totalDebit+ item.debit_amount;
+        }
     }
   };
 
@@ -59,7 +65,9 @@ class AllTransactions extends React.Component {
       maxDate: null,
       minFilterDate: null,
       maxFilterDate: null,
-      currentTransaction: []
+      currentTransaction: [],
+      totalCredit: 0,
+      totalDebit: 0
     };
 
     this.fetchProduct = this.fetchProduct.bind(this);
@@ -72,9 +80,12 @@ class AllTransactions extends React.Component {
   render() {
     //Clear currentTransaction list
     this.state.currentTransaction = [];
+    this.state.totalDebit= 0;
+    this.state.totalCredit= 0;
 
     //Apply date filter
     this.state.transactionDetail.forEach(this.setDateFilter);
+
     return (
       <div id="mainDiv">
         <div className="dateFilter">
@@ -83,6 +94,7 @@ class AllTransactions extends React.Component {
               type="date"
               min={this.state.minDate}
               max={this.state.maxDate}
+              value={this.state.minFilterDate}
               onChange={e => {
                 this.setState({
                   minFilterDate: e.target.value
@@ -95,6 +107,7 @@ class AllTransactions extends React.Component {
               type="date"
               min={this.state.minDate}
               max={this.state.maxDate}
+              value={this.state.maxFilterDate}
               onChange={e => {
                 this.setState({
                   maxFilterDate: e.target.value
@@ -103,30 +116,53 @@ class AllTransactions extends React.Component {
             />
           </div>
         </div>
-        <table className="table table-borderd">
-          <thead className="thead-dark">
-            <tr>
-              <th>Category</th>
-              <th>Date</th>
-              <th>Transaction Amount</th>
-              <th>Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.currentTransaction.map(transaction => (
+        <div className="containTable scrollingSection">
+          <table className="table table-borderd">
+            <thead className="thead-dark">
               <tr>
-                <td>{transaction.category}</td>
-                <td>{transaction.date}</td>
-                <td className={this.returnRowColor(transaction.category)}>
-                  {transaction.credit_amount ? "+" : "-"}
-                  {transaction.credit_amount}
-                  {transaction.debit_amount}
-                </td>
-                <td>{transaction.remark}</td>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Transaction Amount</th>
+                <th>Remark</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {this.state.currentTransaction.map(transaction => (
+                <tr>
+                  <td>{transaction.category}</td>
+                  <td>{transaction.date}</td>
+                  <td className={this.returnRowColor(transaction.category)}>
+                    {transaction.credit_amount ? "+" : "-"}
+                    {transaction.credit_amount}
+                    {transaction.debit_amount}
+                  </td>
+                  <td>{transaction.remark}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="lowerStrip row">
+          <div className="col-sm-3 d-flex justify-content-center align-items-center p-0 m-0">
+            <p>Total Credit: {this.state.totalCredit}</p>
+          </div>
+          <div className="col-sm-3 d-flex justify-content-center align-items-center p-0 m-0">
+            <p>Total Debit: {this.state.totalDebit}</p>
+          </div>
+          <div className="col-sm-3 d-flex justify-content-center align-items-center p-0 m-0">
+              <p>Balance: {this.state.totalCredit-this.state.totalDebit}</p>
+          </div>
+          <div className="col-sm-3 d-flex justify-content-center align-items-center p-0 m-0">
+            <button onClick={e => {
+                            this.setState({
+                                  minFilterDate: this.state.minDate,
+                                  maxFilterDate: this.state.maxDate
+                            });
+                          }}>
+                          Reset date
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
