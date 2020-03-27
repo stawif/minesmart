@@ -12,6 +12,10 @@ export default class InputCommonName extends Component {
     this.props.callbackFromParent(e.target.value);
   };
 
+  onBlur = e => {
+    this.props.callbackFromParent(e.target.value.trim());
+  };
+
   render() {
     return (
       <Fragment>
@@ -23,6 +27,7 @@ export default class InputCommonName extends Component {
           minLength={this.props.minLengthh}
           maxLength="30"
           onChange={this.onChange}
+          onBlur= {this.onBlur}
           required
         />
       </Fragment>
