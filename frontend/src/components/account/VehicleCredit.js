@@ -64,10 +64,12 @@ class VehicleCredit extends React.Component{
     if(jsonCreditDetail.credits.length!=0)
     {
         this.setState({
-            minDate: jsonCreditDetail.credits[0].date
+            minDate: jsonCreditDetail.credits[0].date,
+            minFilterDate: jsonCreditDetail.credits[0].date
         });
         this.setState({
-            maxDate: jsonCreditDetail.credits.slice(-1)[0].date    
+            maxDate: jsonCreditDetail.credits.slice(-1)[0].date,
+            maxFilterDate: jsonCreditDetail.credits.slice(-1)[0].date    
         });
     } 
     this.setState({
@@ -92,6 +94,7 @@ class VehicleCredit extends React.Component{
         }
         if(this.state.minFilterDate <= item.date && item.date <= this.state.maxFilterDate){
             this.state.currentCredit.push(item);
+            this.state.totalCredit= this.state.totalCredit+ item.credit_amount;
         }
     }
 
@@ -113,6 +116,7 @@ class VehicleCredit extends React.Component{
             startDate: null,
             endDate: null,
             currentCredit: [],
+            totalCredit: 0,
             selectedParty: "",
             partyNamesFromApi: [],
             input:{
@@ -142,6 +146,7 @@ class VehicleCredit extends React.Component{
     render(){
         //Clean old data
         this.state.currentCredit=[];
+        this.state.totalCredit= 0;
         
         //  fill current credit
         this.state.creditDetail.credits.forEach(this.setDateFilter);
@@ -149,7 +154,12 @@ class VehicleCredit extends React.Component{
         return(
             <div id="mainDiv" className="d-flex justify-content-center align-items-center scrollingSection">
                 <div className="tableShow" style={this.state.table}>
-                    <div className="upperHeader row">
+                    <div className="upperHeader row" onClick={e => {
+                            this.setState({
+                                minFilterDate: this.state.minDate,
+                                maxFilterDate: this.state.maxDate
+                            });
+                    }}>
                         <div className="col-sm-2">
                             <blockquote className="commonFont blockquote text-center">
 								<p className="mb-0"><b>{this.state.creditDetail.party}</b></p>
@@ -166,14 +176,14 @@ class VehicleCredit extends React.Component{
 							</blockquote>                        
                         </div>
                         <div className="col-sm-3">
-                            <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                            <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.minFilterDate} onChange={e => {
                                 this.setState({
                                     minFilterDate: e.target.value
                                 });
                             }}/>
                         </div>
                         <div className="col-sm-3">
-                            <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                            <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.maxFilterDate} onChange={e => {
                                 this.setState({
                                     maxFilterDate: e.target.value
                                 });
@@ -189,16 +199,21 @@ class VehicleCredit extends React.Component{
 	                        } 
 							>
 							
-								<h4>{this.state.creditDetail.party}</h4>
+								<h4 onClick={e => {
+                                    this.setState({
+                                        minFilterDate: this.state.minDate,
+                                        maxFilterDate: this.state.maxDate
+                                    });
+                                }}>{this.state.creditDetail.party}</h4>
 								<h4>{this.state.creditDetail.contact}</h4>
 								<h4>{this.state.creditDetail.village}</h4>
-								<input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+								<input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.minFilterDate} onChange={e => {
 									this.setState({
 										minFilterDate: e.target.value
 									});
 								}}/>
 
-								<input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+								<input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.maxFilterDate} onChange={e => {
 									this.setState({
 										maxFilterDate: e.target.value
 									});
@@ -227,6 +242,11 @@ class VehicleCredit extends React.Component{
 							</tbody>
 						</table>
 					</div>
+                    <div className="lowerStrip">
+                        <div className="d-flex justify-content-center align-items-center p-0 m-0">
+                            <p>Total Credit: {this.state.totalCredit}</p>
+                        </div>
+                    </div>
 				</div>
                 <form
                     className="form-container form-group"
