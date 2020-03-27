@@ -30,7 +30,15 @@ export default class WorkerRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.workerName.toLowerCase() === item.name.toLowerCase()) {
+        if (this.state.workerName.length<3){
+          this.setState({
+            workerExistMessage: "* Please enter minimum length of 3",
+            buttonStatus: {
+              visibility: "hidden"
+            }
+          });
+        }
+        else if (this.state.workerName.toLowerCase() === item.name.toLowerCase()) {
           this.setState({
             workerExistMessage: "* This worker name is already exist!!!",
             buttonStatus: {
