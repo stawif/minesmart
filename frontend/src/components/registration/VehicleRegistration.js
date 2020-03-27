@@ -27,9 +27,9 @@ export default class VehicleRegistration extends React.Component {
         }
       });
       const showList = (item, index) => {
-        if (this.state.machineName.length<5){
+        if (this.state.vehicleName.length<5){
           this.setState({
-            machineExistStatus: "* Please enter minimum length of 5",
+            vehicleExistStatus: "* Please enter minimum length of 5",
             buttonStatus: {
               visibility: "hidden"
             }
