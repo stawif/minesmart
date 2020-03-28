@@ -10,10 +10,12 @@ class DailyWorkCredit extends React.Component{
         if(jsonDailyWorkDetail.length!=0)
         {
             this.setState({
-                minDate: jsonDailyWorkDetail[0].date
+                minDate: jsonDailyWorkDetail[0].date,
+                minFilterDate: jsonDailyWorkDetail[0].date
             });
             this.setState({
-                maxDate: jsonDailyWorkDetail.slice(-1)[0].date    
+                maxDate: jsonDailyWorkDetail.slice(-1)[0].date,
+                maxFilterDate: jsonDailyWorkDetail.slice(-1)[0].date    
             });
         } 
         this.setState({
@@ -31,6 +33,7 @@ class DailyWorkCredit extends React.Component{
         }
         if(this.state.minFilterDate <= item.date && item.date <= this.state.maxFilterDate){
             this.state.currentDailyWork.push(item);
+            this.state.totalCredit= this.state.totalCredit+ item.received_amount;
         }
     }
 
@@ -42,7 +45,8 @@ class DailyWorkCredit extends React.Component{
             maxDate: null,
             minFilterDate: null,
             maxFilterDate: null,
-            currentDailyWork: []
+            currentDailyWork: [],
+            totalCredit: 0
         }
 
         this.fetchProduct= this.fetchProduct.bind(this);
@@ -54,6 +58,7 @@ class DailyWorkCredit extends React.Component{
     render(){
         //Clear currentDailyWork list
         this.state.currentDailyWork= [];
+        this.state.totalCredit= 0;
         
         //Apply date filter
         this.state.dailyWorkDetail.forEach(this.setDateFilter);
@@ -61,56 +66,71 @@ class DailyWorkCredit extends React.Component{
             <div id="mainDiv">
                 <div class="dateFilter">
                     <div className="fromDate">
-                        <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                        <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.minFilterDate} onChange={e => {
                             this.setState({
                                 minFilterDate: e.target.value
                             });
                         }}/>
                     </div>
                     <div className="toDate">
-                        <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                        <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.maxFilterDate} onChange={e => {
                             this.setState({
                                 maxFilterDate: e.target.value
                             });
                         }}/>
                     </div>
                 </div>
-                <table className="table table-borderd">
-                    <thead className="thead-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Village</th>
-                            <th>Date</th>
-                            <th>Vehicle</th>
-                            <th>5 Feet</th>
-                            <th>5 Feet Rate</th>
-                            <th>2.5 Feet</th>
-                            <th>2.5 Feet Rate</th>
-                            <th>Diesel(Rs)</th>
-                            <th>Received</th>
-                            <th>Net Amount</th>
-                            <th>Remark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.currentDailyWork.map((dailyWork) => (
+                <div className="containTable scrollSection">
+                    <table className="table table-borderd">
+                        <thead className="thead-dark">
                             <tr>
-                                <td>{dailyWork.name}</td>
-                                <td>{dailyWork.village}</td>
-                                <td>{dailyWork.date}</td>
-                                <td>{dailyWork.vehicle}</td>
-                                <td>{dailyWork.five_feet}</td>
-                                <td>{dailyWork.five_feet_rate}</td>
-                                <td>{dailyWork.two_half_feet}</td>
-                                <td>{dailyWork.two_half_feet_rate}</td>
-                                <td>{dailyWork.diesel_spend}</td>
-                                <td>{dailyWork.received_amount}</td>
-                                <td>{dailyWork.net_amount}</td>
-                                <td>{dailyWork.remark}</td>
+                                <th>Name</th>
+                                <th>Village</th>
+                                <th>Date</th>
+                                <th>Vehicle</th>
+                                <th>5 Feet</th>
+                                <th>5 Feet Rate</th>
+                                <th>2.5 Feet</th>
+                                <th>2.5 Feet Rate</th>
+                                <th>Diesel(Rs)</th>
+                                <th>Received</th>
+                                <th>Net Amount</th>
+                                <th>Remark</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {this.state.currentDailyWork.map((dailyWork) => (
+                                <tr>
+                                    <td>{dailyWork.name}</td>
+                                    <td>{dailyWork.village}</td>
+                                    <td>{dailyWork.date}</td>
+                                    <td>{dailyWork.vehicle}</td>
+                                    <td>{dailyWork.five_feet}</td>
+                                    <td>{dailyWork.five_feet_rate}</td>
+                                    <td>{dailyWork.two_half_feet}</td>
+                                    <td>{dailyWork.two_half_feet_rate}</td>
+                                    <td>{dailyWork.diesel_spend}</td>
+                                    <td>{dailyWork.received_amount}</td>
+                                    <td>{dailyWork.net_amount}</td>
+                                    <td>{dailyWork.remark}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="lowerStrip row">
+                    <div className="col-sm-6 d-flex justify-content-center align-items-center p-0 m-0"><p>Total Credit: {this.state.totalCredit}</p></div>
+                    <div className="col-sm-6 d-flex justify-content-center align-items-center p-0 m-0">
+                        <button onClick={e => {
+                            this.setState({
+                                minFilterDate: this.state.minDate,
+                                maxFilterDate: this.state.maxDate
+                            });
+                        }}>
+                            Reset date
+                        </button>
+                    </div>
+                </div>
             </div>    
         );
     }

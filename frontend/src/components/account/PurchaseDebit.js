@@ -67,10 +67,12 @@ class PurchaseDebit extends React.Component{
     if(jsonDebitDetail.debits.length!=0)
     {
         this.setState({
-            minDate: jsonDebitDetail.debits[0].date
+            minDate: jsonDebitDetail.debits[0].date,
+            minFilterDate: jsonDebitDetail.debits[0].date
         });
         this.setState({
-            maxDate: jsonDebitDetail.debits.slice(-1)[0].date    
+            maxDate: jsonDebitDetail.debits.slice(-1)[0].date,
+            maxFilterDate: jsonDebitDetail.debits.slice(-1)[0].date    
         });
     } 
     this.setState({
@@ -95,6 +97,7 @@ class PurchaseDebit extends React.Component{
         }
         if(this.state.minFilterDate <= item.date && item.date <= this.state.maxFilterDate){
             this.state.currentDebit.push(item);
+            this.state.totalDebit= this.state.totalDebit+ item.debit_amount;
         }
     }
 
@@ -116,6 +119,7 @@ class PurchaseDebit extends React.Component{
             startDate: null,
             endDate: null,
             currentDebit: [],
+            totalDebit: 0,
             selectedParty: "",
             partyNamesFromApi: [],
             input:{
@@ -146,15 +150,21 @@ class PurchaseDebit extends React.Component{
     render(){
         //Clean old data
         this.state.currentDebit=[];
+        this.state.totalDebit=0;
         
         //  fill current debit
         this.state.debitDetail.debits.forEach(this.setDateFilter);
 
         return(
-            <div id="mainDiv" className="d-flex justify-content-center align-items-center scrollingSection">
+            <div id="mainDiv" className="d-flex justify-content-center align-items-center">
                 <div className="tableShow" style={this.state.table}>
                     <div className="upperHeader row">
-                        <div className="col-sm-2">
+                        <div className="col-sm-2" onClick={e => {
+                            this.setState({
+                                minFilterDate: this.state.minDate,
+                                maxFilterDate: this.state.maxDate
+                            });
+                        }}>
                             <blockquote className="commonFont blockquote text-center">
 								<p className="mb-0"><b>{this.state.debitDetail.party}</b></p>
 							</blockquote>                        
@@ -170,14 +180,14 @@ class PurchaseDebit extends React.Component{
 							</blockquote>                        
                         </div>
                         <div className="col-sm-3">
-                            <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                            <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.minFilterDate} onChange={e => {
                                 this.setState({
                                     minFilterDate: e.target.value
                                 });
                             }}/>
                         </div>
                         <div className="col-sm-3">
-                            <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                            <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.maxFilterDate} onChange={e => {
                                 this.setState({
                                     maxFilterDate: e.target.value
                                 });
@@ -193,16 +203,21 @@ class PurchaseDebit extends React.Component{
 	                        } 
 							>
 							
-								<h4>{this.state.debitDetail.party}</h4>
+								<h4 onClick={e => {
+                                    this.setState({
+                                        minFilterDate: this.state.minDate,
+                                        maxFilterDate: this.state.maxDate
+                                    });
+                                }}>{this.state.debitDetail.party}</h4>
 								<h4>{this.state.debitDetail.contact}</h4>
 								<h4>{this.state.debitDetail.village}</h4>
-								<input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+								<input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.minFilterDate} onChange={e => {
 									this.setState({
 										minFilterDate: e.target.value
 									});
 								}}/>
 
-								<input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+								<input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.maxFilterDate} onChange={e => {
 									this.setState({
 										maxFilterDate: e.target.value
 									});
@@ -211,7 +226,7 @@ class PurchaseDebit extends React.Component{
 							</Popup>
 						</div>
 					</div>
-					<div className="lowerHeader">
+					<div className="lowerHeader scrollingSection">
 						<table className="table table-borderd tablePart">
 							<thead className="thead-dark">
 								<tr>
@@ -231,6 +246,11 @@ class PurchaseDebit extends React.Component{
 							</tbody>
 						</table>
 					</div>
+                    <div className="lowerStrip">
+                    <div className="d-flex justify-content-center align-items-center p-0 m-0">
+                            <p>Total Debit: {this.state.totalDebit}</p>
+                        </div>
+                    </div>
 				</div>
                 <form
                     className="form-container form-group"

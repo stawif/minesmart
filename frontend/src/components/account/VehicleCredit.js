@@ -152,7 +152,7 @@ class VehicleCredit extends React.Component{
         this.state.creditDetail.credits.forEach(this.setDateFilter);
 
         return(
-            <div id="mainDiv" className="d-flex justify-content-center align-items-center scrollingSection">
+            <div id="mainDiv" className="d-flex justify-content-center align-items-center">
                 <div className="tableShow" style={this.state.table}>
                     <div className="upperHeader row" onClick={e => {
                             this.setState({
@@ -222,7 +222,7 @@ class VehicleCredit extends React.Component{
 							</Popup>
 						</div>
 					</div>
-					<div className="lowerHeader">
+					<div className="lowerHeader scrollingSection">
 						<table className="table table-borderd tablePart">
 							<thead className="thead-dark">
 								<tr>

@@ -10,10 +10,12 @@ class DailyExpenseDebit extends React.Component{
         if(jsonExpenseDetail.length!=0)
         {
             this.setState({
-                minDate: jsonExpenseDetail[0].date
+                minDate: jsonExpenseDetail[0].date,
+                minFilterDate: jsonExpenseDetail[0].date
             });
             this.setState({
-                maxDate: jsonExpenseDetail.slice(-1)[0].date    
+                maxDate: jsonExpenseDetail.slice(-1)[0].date,
+                maxFilterDate: jsonExpenseDetail.slice(-1)[0].date    
             });
         } 
         this.setState({
@@ -31,6 +33,7 @@ class DailyExpenseDebit extends React.Component{
         }
         if(this.state.minFilterDate <= item.date && item.date <= this.state.maxFilterDate){
             this.state.currentExpense.push(item);
+            this.state.totalDebit= this.state.totalDebit+ item.debit_amount;
         }
     }
 
@@ -42,7 +45,8 @@ class DailyExpenseDebit extends React.Component{
             maxDate: null,
             minFilterDate: null,
             maxFilterDate: null,
-            currentExpense: []
+            currentExpense: [],
+            totalDebit: 0
         }
 
         this.fetchProduct= this.fetchProduct.bind(this);
@@ -54,6 +58,7 @@ class DailyExpenseDebit extends React.Component{
     render(){
         // Clear currentExpense list
         this.state.currentExpense= [];
+        this.state.totalDebit= 0;
 
         //Apply date filter
         this.state.expenseDetail.forEach(this.setDateFilter);
@@ -62,40 +67,55 @@ class DailyExpenseDebit extends React.Component{
             <div id="mainDiv">
                 <div class="dateFilter">
                     <div className="fromDate">
-                        <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                        <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.minFilterDate} onChange={e => {
                             this.setState({
                                 minFilterDate: e.target.value
                             });
                         }}/>
                     </div>
                     <div className="toDate">
-                        <input type="date" min={this.state.minDate} max={this.state.maxDate} onChange={e => {
+                        <input type="date" min={this.state.minDate} max={this.state.maxDate} value={this.state.maxFilterDate} onChange={e => {
                             this.setState({
                                 maxFilterDate: e.target.value
                             });
                         }}/>
                     </div>
                 </div>
-                <table className="table table-borderd">
-                    <thead className="thead-dark">
-                        <tr>
-                            <th>Category</th>
-                            <th>Date</th>
-                            <th>Debit Amount</th>
-                            <th>Remark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.currentExpense.map((expense) => (
+                <div className="containTable scrollingSection">
+                    <table className="table table-borderd">
+                        <thead className="thead-dark">
                             <tr>
-                                <td>{expense.category}</td>
-                                <td>{expense.date}</td>
-                                <td>{expense.debit_amount}</td>
-                                <td>{expense.remark}</td>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Debit Amount</th>
+                                <th>Remark</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {this.state.currentExpense.map((expense) => (
+                                <tr>
+                                    <td>{expense.category}</td>
+                                    <td>{expense.date}</td>
+                                    <td>{expense.debit_amount}</td>
+                                    <td>{expense.remark}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="lowerStrip row">
+                    <div className="col-sm-6 d-flex justify-content-center align-items-center p-0 m-0"><p>Total Debit: {this.state.totalDebit}</p></div>
+                    <div className="col-sm-6 d-flex justify-content-center align-items-center p-0 m-0">
+                        <button onClick={e => {
+                            this.setState({
+                                minFilterDate: this.state.minDate,
+                                maxFilterDate: this.state.maxDate
+                            });
+                        }}>
+                            Reset date
+                        </button>
+                    </div>
+                </div>
             </div>    
         );
     }
